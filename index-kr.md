@@ -61,16 +61,17 @@ To do all that, we'll have to learn a little bit about programming.
 > $ cd && cd Desktop/r-novice-inflammation/data
 >```
 
-## Topics
-
-1.  [Analyzing patient data](01-starting-with-data.html)
-2.  [Creating functions](02-func-R.html)
-3.  [Analyzing multiple data sets](03-loops-R.html)
-4.  [Making choices](04-cond.html)
-5.  [Command-Line Programs](05-cmdline.html)
-6.  [Best practices for using R and designing programs](06-best-practices-R.html)
-7.  [Dynamic reports with knitr](07-knitr-R.html)
-8.  [Making packages in R](08-making-packages-R.html)
+## 학습주제
+|   한국어(Korean)      |    영어(English)            |
+|--------------------------------|-----------------------------------|
+|1.  [환자 데이터 분석](01-starting-with-data.html)   |1.  [Analyzing patient data](01-starting-with-data.html) |
+|2.  [함수 생성](02-func-R.html)                                 |2.  [Creating functions](02-func-R.html) |
+|3.  [데이터셋 다수 분석](03-loops-R.html)                |3.  [Analyzing multiple data sets](03-loops-R.html) |
+|4.  [조건 선택](04-cond.html)                                    |4.  [Making choices](04-cond.html) |
+|5.  [명령-라인 프로그램](05-cmdline.html)               |5.  [Command-Line Programs](05-cmdline.html) |
+|6.  [R을 사용해서 프로그램을 설계하는 모범사례](06-best-practices-R.html)                              |6.  [Best practices for using R and designing programs](06-best-practices-R.html) |
+|7.  [knitr로 동적 보고서 작성](07-knitr-R.html)          |7.  [Dynamic reports with knitr](07-knitr-R.html) |
+|8.  [R 팩키지 작성](08-making-packages-R.html)  |8.  [Making packages in R](08-making-packages-R.html) |
 
 ## Other Resources
 
