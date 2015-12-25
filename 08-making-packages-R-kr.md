@@ -190,6 +190,6 @@ kelvin_to_celsius(273.15)
 ~~~
 
 > ## 도전과제 - 분포에 대한 팩키지 생성 {.challenge}
-
+>
 > - tempConvert 팩키지가 Kelvin 을 Fahrenheit으로 변환하거나 혹은 Celsius에서 Kelvin 혹은 Fahrenheit로 변환하도록 신규 함수를 작성하라.
 > - `analyze` 함수에 대한 팩키지를 작성해서, 더 많은 데이터가 들어오면 적재하기 쉽게 만든다.
