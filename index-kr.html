@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="generator" content="pandoc">
-    <title>Software Carpentry: Programming with R</title>
+    <title>Software Carpentry: R 프로그래밍</title>
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.css" />
@@ -26,48 +26,48 @@
       <article>
       <div class="row">
         <div class="col-md-10 col-md-offset-1">
-                    <h1 class="title">Programming with R</h1>
-          <p>The best way to learn how to program is to do something useful, so this introduction to R is built around a common scientific task: data analysis.</p>
-<p>Our real goal isn’t to teach you R, but to teach you the basic concepts that all programming depends on. We use R in our lessons because:</p>
+                    <h1 class="title">R 프로그래밍</h1>
+          <p>프로그램을 어떻게 작성하는지 배우는 가장 좋은 방법은 의미있는 무언가를 작성해보는 것이다. 그래서 이번 R 소개는 흔한 과학 작업에 맞춰있다: 자료 분석.</p>
+<p>진정한 목적은 R을 가르치는 것이 아니라, 모든 프로그래밍에 기반하는 기본 개념을 전달함에 있다. R을 사용해서 학습을 진행한다. 왜냐하면,</p>
 <ol style="list-style-type: decimal">
-<li>we have to use <em>something</em> for examples;</li>
-<li>it’s free, well-documented, and runs almost everywhere;</li>
-<li>it has a large (and growing) user base among scientists; and</li>
-<li>it has a large library of external packages available for performing diverse tasks.</li>
+<li>예제로 <em>어떤</em> 언어든지 사용해야만 된다.</li>
+<li>무료이고, 문서화가 잘 되어 있고, 거의 모든 곳에서 실행된다.</li>
+<li>과학자들 사이에 커다란 (그리고 점증하는) 사용자 기반이 있다.</li>
+<li>다양한 작업을 수행하는데 이용가능한 외부 패키지 라이브러리가 많다.</li>
 </ol>
-<p>But the two most important things are to use whatever language your colleagues are using, so you can share your work with them easily, and to use that language <em>well</em>.</p>
-<p>We are studying inflammation in patients who have been given a new treatment for arthritis, and need to analyze the first dozen data sets of their daily inflammation. The data sets are stored in <a href="reference.html#comma-separated-values">comma-separated values</a> (CSV) format: each row holds information for a single patient, and the columns represent successive days. The first few rows of our first file look like this:</p>
+<p>하지만, 두 가지 가장 중요한 것은 어떤 언어든 상관없이 동료가 사용하는 언어를 사용해서, 작업 결과를 쉽게 공유할 수 있어야 하고, 해당 언어를 <em>잘</em> 사용해야 된다는 점이다.</p>
+<p>관절염에 대한 새로운 치료법이 처방된 환자의 염증에 대한 연구를 진행하고 있고, 첫 데이터셋(Data Set) 12개를 분석할 필요가 있다. 데이터셋은 <a href="reference.html#comma-separated-values">CSV 형식</a>(comma-separated values, 구분자가 콤마 값을 가진 파일 형식)으로 저장되어 있다: 각 행은 환자 한명에 대한 정보로 구성되고, 열은 연속된 날짜 정보를 나타낸다. 첫번째 파일에 대한 처음 행 몇줄 정보는 다음과 같다:</p>
 <pre><code>0,0,1,3,1,2,4,7,8,3,3,3,10,5,7,4,7,7,12,18,6,13,11,11,7,7,4,6,8,8,4,4,5,7,3,4,2,3,0,0
 0,1,2,1,2,1,3,2,2,6,10,11,5,9,4,4,7,16,8,6,18,4,12,5,12,7,11,5,11,3,3,5,4,4,5,5,1,1,0,1
 0,1,1,3,3,2,6,2,5,9,5,7,4,5,4,15,5,11,9,10,19,14,12,17,7,12,11,7,4,2,10,5,4,2,2,3,2,2,1,1
 0,0,2,0,4,2,2,1,6,7,10,7,9,13,8,8,15,10,10,7,17,4,4,7,6,15,6,4,9,11,3,5,6,3,3,4,2,3,2,1
 0,1,1,3,3,1,3,5,2,4,4,7,6,5,3,10,8,10,6,17,9,14,9,7,13,9,12,6,7,7,9,6,3,2,2,4,2,0,1,1</code></pre>
-<p>We want to:</p>
+<p>다음을 수행해야 된다.</p>
 <ul>
-<li>load that data into memory,</li>
-<li>calculate the average inflammation per day across all patients, and</li>
-<li>plot the result.</li>
+<li>CSV 형식 데이터 파일을 주기억장치에 적재(loading)한다.</li>
+<li>모든 환자에 대해서 각 날짜별로 평균 염증을 계산한다.</li>
+<li>결과값을 도식화한다.</li>
 </ul>
-<p>To do all that, we’ll have to learn a little bit about programming.</p>
+<p>상기 작업을 수행하기 위해서, 프로그래밍에 관해 약간 학습할 필요가 있다.</p>
 <section class="prereq panel panel-warning">
 <div class="panel-heading">
-<h2 id="prerequisites"><span class="glyphicon glyphicon-education"></span>Prerequisites</h2>
+<h2 id="전제조건"><span class="glyphicon glyphicon-education"></span>전제조건</h2>
 </div>
 <div class="panel-body">
-<p>Learners need to understand the concepts of files and directories (including the working directory). We often use RStudio to teach this lesson, but it is not required.</p>
+<p>학습자는 (작업 디렉토리를 포함) 파일과 디렉토리에 관한 개념을 이해할 필요가 있다. 흔히 RStudio를 사용해서 학습을 진행하지만, 필수로 요구되는 것은 아니다.</p>
 </div>
 </section>
 <section class="getready panel panel-warning">
 <div class="panel-heading">
-<h2 id="getting-ready"><span class="glyphicon glyphicon-check"></span>Getting ready</h2>
+<h2 id="사전-준비"><span class="glyphicon glyphicon-check"></span>사전 준비</h2>
 </div>
 <div class="panel-body">
-<p>You need to download some files to follow this lesson:</p>
+<p>학습을 진행하는데 일부 파일을 미리 다운로드할 필요가 있다:</p>
 <ol style="list-style-type: decimal">
-<li>Make a new folder in your Desktop called <code>r-novice-inflammation</code>.</li>
-<li>Download <a href="./r-novice-inflammation-data.zip">r-novice-inflammation-data.zip</a> and move the file to this folder.</li>
-<li>If it’s not unzipped yet, double-click on it to unzip it. You should end up with a new folder called <code>data</code>.</li>
-<li><p>You can access this folder from the Unix shell with:</p>
+<li>바탕화면에 <code>r-novice-inflammation</code>로 새로운 폴더를 생성한다.</li>
+<li><a href="./r-novice-inflammation-data.zip">r-novice-inflammation-data.zip</a> 파일을 다운로드 하고, 상기 폴더에 이동한다.</li>
+<li>만약 아직 압축을 풀지 않았다면, 두번 클릭해서 압축을 푼다. 최종 결과작업은 <code>data</code> 폴더가 새로 생겨야 된다.</li>
+<li><p>다음 명령어로 유닉스 쉘에서 상기 폴더로 접근할 수 있다:</p>
 <pre><code>$ cd &amp;&amp; cd Desktop/r-novice-inflammation/data</code></pre></li>
 </ol>
 </div>
@@ -86,11 +86,11 @@
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">1. <a href="01-starting-with-data-R-kr.html">환자 데이터 분석</a></td>
+<td align="left">1. <a href="01-starting-with-data-kr.html">환자 데이터 분석</a></td>
 <td align="left">1. <a href="01-starting-with-data.html">Analyzing patient data</a></td>
 </tr>
 <tr class="even">
-<td align="left">2. <a href="02-func-R-kr.html">함수 생성</a></td>
+<td align="left">2. <a href="02-func-kr.html">함수 생성</a></td>
 <td align="left">2. <a href="02-func-R.html">Creating functions</a></td>
 </tr>
 <tr class="odd">
@@ -119,18 +119,18 @@
 </tr>
 </tbody>
 </table>
-<h2 id="other-resources">Other Resources</h2>
+<h2 id="추가-학습교재">추가 학습교재</h2>
 <ul>
-<li><a href="reference.html">Reference</a></li>
-<li><a href="discussion.html">Discussion</a></li>
-<li><a href="instructors.html">Instructor’s Guide</a></li>
+<li><a href="reference.html">참고문헌</a></li>
+<li><a href="discussion.html">토론</a></li>
+<li><a href="instructors.html">강사 안내서</a></li>
 </ul>
-<h2 id="supplemental-lessons">Supplemental lessons</h2>
+<h2 id="보충-학습">보충 학습</h2>
 <ul>
-<li><a href="01-supp-intro-rstudio.html">Introduction to RStudio</a></li>
-<li><a href="01-supp-addressing-data.html">Addressing data</a></li>
-<li><a href="01-supp-factors.html">Understanding factors</a></li>
-<li><a href="01-supp-data-structures.html">Data types and structures</a></li>
+<li><a href="01-supp-intro-rstudio.html">RStudio 소개</a></li>
+<li><a href="01-supp-addressing-data.html">데이터 다루기</a></li>
+<li><a href="01-supp-factors.html">요인(factor) 이해하기</a></li>
+<li><a href="01-supp-data-structures.html">자료형과 자료구조</a></li>
 </ul>
         </div>
       </div>
