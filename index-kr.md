@@ -64,7 +64,7 @@ R을 사용해서 학습을 진행한다. 왜냐하면,
 |   한국어(Korean)      |    영어(English)            |
 |--------------------------------|-----------------------------------|
 |1.  [환자 데이터 분석](01-starting-with-data-kr.html)   |1.  [Analyzing patient data](01-starting-with-data.html) |
-|2.  [함수 생성](02-func-kr.html)                                 |2.  [Creating functions](02-func-R.html) |
+|2.  [함수 생성](02-func-R-kr.html)                                 |2.  [Creating functions](02-func-R.html) |
 |3.  [데이터셋 다수 분석](03-loops-R-kr.html)                |3.  [Analyzing multiple data sets](03-loops-R.html) |
 |4.  [조건 선택](04-cond-R-kr.html)                                    |4.  [Making choices](04-cond.html) |
 |5.  [명령-라인 프로그램](05-cmdline-R-kr.html)               |5.  [Command-Line Programs](05-cmdline.html) |
