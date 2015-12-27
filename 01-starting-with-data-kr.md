@@ -185,26 +185,23 @@ weight_lb
 엑셀같은 스프레드쉬트가 동작하는 방식과 이런 점이 다르다.
 
 > ## 조언 {.callout} 
->An alternative way to print the value of a variable is to use () around the assignment statement. As an example: `(total_weight <- weight_kg + weight_lb)`, adds the values of `weight_kg` and `weight_lb`, assigns the result to the `total_weight`, and finally prints the assigned value of the variable `total_weight`.
+> 변수 값을 출력하는 대안으로 할당문 주위에 괄호, `()`를 사용하는 것이다.
+> 예제로, `(total_weight <- weight_kg + weight_lb)`, `weight_kg` 과 `weight_lb`를 더해서 결과를 
+> `total_weight`에 할당하고, 마지막으로 변수 `total_weight`에 할당된 값을 출력한다.
 
-
-Now that we know how to assign things to variables, let's re-run `read.csv` and save its result:
-
+변수에 어떻게 값을 할당하는지 알기 때문에, `read.csv`를 다시 실행하고 결과를 저장하자:
 
 ~~~{.r}
 dat <- read.csv(file = "data/inflammation-01.csv", header = FALSE)
 ~~~
 
-This statement doesn't produce any output because assignment doesn't display anything.
-If we want to check that our data has been loaded, we can print the variable's value.
-However, for large data sets it is convenient to use the function `head` to display only the first few rows of data.
-
+상기 문장은 어떤 출력결과도 만들어 내지 않는데 이유는 할당은 어떤 것도 화면에 출력하지 않기 때문이다.
+데이터가 적재되었는지 확인하고자 한다면, 변수값을 출력할 수 있다. 
+하지만, 매우 큰 데이터셋에 대해서 데이터 첫 몇 줄만 화면에 출력하는 함수 `head`를 사용하는 것이 편리하고 좋다.
 
 ~~~{.r}
 head(dat)
 ~~~
-
-
 
 ~~~{.output}
   V1 V2 V3 V4 V5 V6 V7 V8 V9 V10 V11 V12 V13 V14 V15 V16 V17 V18 V19 V20
@@ -231,9 +228,10 @@ head(dat)
 
 ~~~
 
-> ## Challenge - Assigning values to variables {.challenge}
+> ## 도전과제 - 변수에 값을 할당한다 {.challenge}
 >
-> Draw diagrams showing what variables refer to what values after each statement in the following program:
+> 도표를 그려서, 다음 프로그램의 각 문장이 실행된 뒤에, 
+> 어떤 변수가 어떤 값을 참조하는지 보이세요:
 >
 ~~~{.r}
 mass <- 47.5
@@ -242,61 +240,50 @@ mass <- mass * 2.0
 age <- age - 20
 ~~~
 
-### Manipulating Data
+### 데이터 능숙하게 다루기
 
-Now that our data is loaded in memory, we can start doing things with it.
-First, let's ask what type of thing `dat` is:
-
+데이터가 주기억장치에 올라갔기 때문에, 
+데이터를 가지고 무언가를 시작할 수 있다. 
+먼저 `dat`가 무슨 형식인지 확인해보자:
 
 ~~~{.r}
 class(dat)
 ~~~
 
-
-
 ~~~{.output}
 [1] "data.frame"
-
 ~~~
 
-The output tells us that is a data frame. Think of this structure as a spreadsheet in MS Excel that many of us are familiar with.
-Data frames are very useful for storing data and you will find them elsewhere when programming in R. A typical data frame of experimental data contains individual observations in rows and variables in columns.
+출력결과를 통해서 현재 데이터가 데이터프레임(data frame)이라는 것을 알 수 있다. 
+많은 사람들이 사용해서 익숙한 마이크로소프트 엑셀 스프레드쉬트와 유사하다. 
+데이터프레임이 데이터를 저장하는데 매우 유용하고, R로 프로그래밍하는 곳 어디서나 발견하게 된다.
+실험 데이터에 대한 전형적인 데이터프레임은 행에는 개별 관측점, 열에는 변수가 담겨진다.
 
-We can see the shape, or [dimensions](reference.html#dimensions-(of-an-array)), of the data frame with the function `dim`:
-
+함수 `dim`으로 데이터프레임에 대한 형태(shape), 즉, [차원](reference.html#dimensions-(of-an-array))(dimensions)을 볼 수 있다:
 
 ~~~{.r}
 dim(dat)
 ~~~
 
-
-
 ~~~{.output}
 [1] 60 40
-
 ~~~
 
-This tells us that our data frame, `dat`, has 60 rows and 40 columns.
+출력결과를 통해서 `dat` 데이터프레임이 60 행과 40 열로 구성된 것을 알 수 있다.
 
-If we want to get a single value from the data frame, we can provide an [index](reference.html#index) in square brackets, just as we do in math:
-
+데이터프레임에서 값 하나를 얻으려고 한다면, 수학에서 하는 것과 같은 방식으로 꺾쇄 괄호내부에 [인덱스](reference.html#index)(index)를 넣을 수 있다:
 
 ~~~{.r}
-# first value in dat
+# dat 첫번째 값
 dat[1, 1]
 ~~~
 
-
-
 ~~~{.output}
 [1] 0
-
 ~~~
 
-
-
 ~~~{.r}
-# middle value in dat
+# dat 중간값
 dat[30, 20]
 ~~~
 
@@ -304,18 +291,14 @@ dat[30, 20]
 
 ~~~{.output}
 [1] 16
-
 ~~~
 
-An index like `[30, 20]` selects a single element of a data frame, but we can select whole sections as well.
-For example, we can select the first ten days (columns) of values for the first four patients (rows) like this:
-
+`[30, 20]` 처럼 인텍스를 넣어서 데이터프레임의 요소값을 하나 선택할 수 있지만, 전체 부문도 선택할 수 있다. 
+예를 들어, 다음과 같이 첫 환자 네명(행)에 대해서, 첫 10일치(열) 값을 선택할 수 있다:
 
 ~~~{.r}
 dat[1:4, 1:10]
 ~~~
-
-
 
 ~~~{.output}
   V1 V2 V3 V4 V5 V6 V7 V8 V9 V10
@@ -323,19 +306,15 @@ dat[1:4, 1:10]
 2  0  1  2  1  2  1  3  2  2   6
 3  0  1  1  3  3  2  6  2  5   9
 4  0  0  2  0  4  2  2  1  6   7
-
 ~~~
 
-The [slice](reference.html#slice) `1:4` means, "Start at index 1 and go to index 4."
+[슬라이스](reference.html#slice)(slice) `1:4`가 뜻하는 것은 "1번 인덱스에서 시작해서 4번 인덱스까지다." 
 
-The slice does not need to start at 1, e.g. the line below selects rows 5 through 10:
-
+슬라이스가 반드시 1번에서 시작할 필요는 없다. 즉, 아래 행은 5~10번 행을 선택한 사례다:
 
 ~~~{.r}
 dat[5:10, 1:10]
 ~~~
-
-
 
 ~~~{.output}
    V1 V2 V3 V4 V5 V6 V7 V8 V9 V10
@@ -345,16 +324,13 @@ dat[5:10, 1:10]
 8   0  0  1  2  3  1  2  3  5   3
 9   0  0  0  3  1  5  6  5  5   8
 10  0  1  1  2  1  3  5  3  5   8
-
 ~~~
-We can use the function `c`, which stands for **c**ombine, to select non-contiguous values:
 
+`c` 함수(**c**ombine을 뜻함)를 사용해서 인접하지 않는 값도 선택할 수 있다:
 
 ~~~{.r}
 dat[c(3, 8, 37, 56), c(10, 14, 29)]
 ~~~
-
-
 
 ~~~{.output}
    V10 V14 V29
@@ -362,20 +338,17 @@ dat[c(3, 8, 37, 56), c(10, 14, 29)]
 8    3   5   6
 37   6   9  10
 56   7  11   9
-
 ~~~
 
-We also don't have to provide a slice for either the rows or the columns.
-If we don't include a slice for the rows, R returns all the rows; if we don't include a slice for the columns, R returns all the columns.
-If we don't provide a slice for either rows or columns, e.g. `dat[, ]`, R returns the full data frame.
-
+또한, 행과 열에 슬라이스를 줄 필요도 없다. 
+만약 행에 슬라이스가 없다면, R은 모든 행을 반환한다. 
+만약 열에 슬라이스가 없다면, R은 모든 열을 반환한다. 
+`dat[, ]`처럼 행과 열 모두에 슬라이가 없다면 R은 전체 데이터프레임을 반환한다.
 
 ~~~{.r}
-# All columns from row 5
+# 5번째 행에 대한 모든 열
 dat[5, ]
 ~~~
-
-
 
 ~~~{.output}
   V1 V2 V3 V4 V5 V6 V7 V8 V9 V10 V11 V12 V13 V14 V15 V16 V17 V18 V19 V20
@@ -384,217 +357,172 @@ dat[5, ]
 5   9  14   9   7  13   9  12   6   7   7   9   6   3   2   2   4   2   0
   V39 V40
 5   1   1
-
 ~~~
-
-
 
 ~~~{.r}
-# All rows from column 16
+# 16번째 열에 대한 모든 행
 dat[, 16]
 ~~~
-
-
 
 ~~~{.output}
  [1]  4  4 15  8 10 15 13  9 11  6  3  8 12  3  5 10 11  4 11 13 15  5 14
 [24] 13  4  9 13  6  7  6 14  3 15  4 15 11  7 10 15  6  5  6 15 11 15  6
 [47] 11 15 14  4 10 15 11  6 13  8  4 13 12  9
-
 ~~~
 
-Now let's perform some common mathematical operations to learn about our inflammation data.
-When analyzing data we often want to look at partial statistics, such as the maximum value per patient or the average value per day.
-One way to do this is to select the data we want to create a new temporary data frame, and then perform the calculation on this subset:
-
+이제 염증데이터에 대해서 좀더 살펴보는데, 일반적인 수학 연산을 수행해보자. 
+데이터를 분석할 때, 환자마다 최대값 혹은 날마다 평균값 같은 통계량을 살펴보고자 한다. 
+이것을 수행하는 방법은 새로이 임시 데이터프레임을 생성하고 나서 데이터를 선택하고,
+해당 개체에 대한 연산작업을 수행하는 것이다:
 
 ~~~{.r}
-# first row, all of the columns
+# 첫번째 행과, 모든 열
 patient_1 <- dat[1, ]
-# max inflammation for patient 1
+# 1번 환자에 대한 최대 염증값
 max(patient_1)
 ~~~
 
-
-
 ~~~{.output}
 [1] 18
-
 ~~~
 
-We don't actually need to store the row in a variable of its own.
-Instead, we can combine the selection and the function call:
-
+사실 변수에 행을 저장할 필요는 없다. 
+대신에, 데이터 선택과 함수 호출을 조합할 수 있다:
 
 ~~~{.r}
-# max inflammation for patient 2
+# 2번 환자에 대한 최대 염증값
 max(dat[2, ])
 ~~~
 
-
-
 ~~~{.output}
 [1] 18
-
 ~~~
 
-R also has functions for other common calculations, e.g. finding the minimum, mean, median, and standard deviation of the data:
-
+R은 또한 데이터에 대한 최소값, 평균, 중위값, 표준편차 같은 일반적인 연산작업에 대한 함수를 제공한다:
 
 ~~~{.r}
-# minimum inflammation on day 7
+# 7번째 날 최소 염증값
 min(dat[, 7])
 ~~~
 
-
-
 ~~~{.output}
 [1] 1
-
 ~~~
 
-
-
 ~~~{.r}
-# mean inflammation on day 7
+# 7번째 날 평균 염증값
 mean(dat[, 7])
 ~~~
 
-
-
 ~~~{.output}
 [1] 3.8
-
 ~~~
 
-
-
 ~~~{.r}
-# median inflammation on day 7
+# 7번째 날 염증값 중위수
 median(dat[, 7])
 ~~~
 
-
-
 ~~~{.output}
 [1] 4
-
 ~~~
 
-
-
 ~~~{.r}
-# standard deviation of inflammation on day 7
+# 7번째 날 염증값 표준편차
 sd(dat[, 7])
 ~~~
 
-
-
 ~~~{.output}
 [1] 1.725187
-
 ~~~
 
-What if we need the maximum inflammation for all patients, or the average for each day?
-As the diagram below shows, we want to perform the operation across a margin of the data frame:
+만약 모든 환자에 대한 최대 염증값 혹은 각 날짜별로 평균값이 필요하다면 어떨까? 
+다음 도표처럼, 데이터프레임의 가장자리를 따라서 연산을 수행하고자 한다:
 
 <img src="fig/r-operations-across-axes.svg" alt="Operations Across Axes" />
 
-To support this, we can use the `apply` function.
+상기 연산을 수행하기 위해서, `apply` 함수를 사용한다.
 
-> ## Tip {.callout}
+> ## 조언 {.callout}
 >
-> To learn about a function in R, e.g. `apply`, we can read its help
-> documention by running `help(apply)` or `?apply`.
+> `apply` 같은 R 함수에 대해 좀더 학습하기 위해서, 
+> `help(apply)` 혹은 `?apply` 명령어를 실행해서 도움말 문서를 참조한다.
 
-`apply` allows us to repeat a function on all of the rows (`MARGIN = 1`) or columns (`MARGIN = 2`) of a data frame.
+`apply` 함수를 사용해서 데이터프레임의 모든 행(`MARGIN = 1`) 혹은 열(`MARGIN = 2`)에 동일한 함수연산을 수행한다.
 
-Thus, to obtain the average inflammation of each patient we will need to calculate the mean of all of the rows (`MARGIN = 1`) of the data frame.
-
+그래서, 각 환자별로 평균 염증값을 얻기 위해서, 데이터프레임의 모든 행(`MARGIN = 1`)에 대해 평균값을 계산할 필요가 있다.
 
 ~~~{.r}
 avg_patient_inflammation <- apply(dat, 1, mean)
 ~~~
 
-And to obtain the average inflammation of each day we will need to calculate the mean of all of the columns (`MARGIN = 2`) of the data frame.
-
+각 날짜별 평균 염증값을 얻기 위해서, 데이터프레임의 모든 열(MARGIN = 2)에 대해 평균값을 계산할 필요가 있을 것이다.
 
 ~~~{.r}
 avg_day_inflammation <- apply(dat, 2, mean)
 ~~~
 
-Since the second argument to `apply` is `MARGIN`, the above command is equivalent to `apply(dat, MARGIN = 2, mean)`.
-We'll learn why this is so in the next lesson.
+`apply` 함수의 두번째 인자는 `MARGIN`이여서, 상기 명령어는 `apply(dat, MARGIN = 2, mean)`과 동일하다. 
 
-> ## Tip {.callout}
+> ## 조언 {.callout}
 >
-> Some common operations have more efficient alternatives. For example, you
-> can calculate the row-wise or column-wise means with `rowMeans` and
-> `colMeans`, respectively.
+> 몇몇 많이 사용되는 연산에 대해서 좀더 효율적인 대안이 있다. 
+> 예를 들어, `rowMeans`와 `colMeans`를 사용해서 열방향과 행방향 각각 평균을 계산할 수 있다.
 
-> ## Challenge - Slicing (subsetting) data {.challenge}
+> ## 도전과제 - 데이터 슬라이싱(부분집합, subsetting) {.challenge}
 >
-> A subsection of a data frame is called a [slice](reference.html#slice).
-> We can take slices of character vectors as well:
->
+> 데이터프레임 부분집합(subset)를 [슬라이스](reference.html#slice)(slice)라고 한다. 
+> 문자 벡터에도 슬라이스를 적용할 수 있다:
 > 
 > ~~~{.r}
 > animal <- c("m", "o", "n", "k", "e", "y")
-> # first three characters
+> # 첫 문자 세개
 > animal[1:3]
 > ~~~
 > 
-> 
-> 
 > ~~~{.output}
 > [1] "m" "o" "n"
-> 
 > ~~~
 > 
-> 
-> 
 > ~~~{.r}
-> # last three characters
+> # 마지막 문자 세개
 > animal[4:6]
 > ~~~
 > 
-> 
-> 
 > ~~~{.output}
 > [1] "k" "e" "y"
-> 
 > ~~~
 >
-> 1.  If the first four characters are selected using the slice `animal[1:4]`, how can we obtain the first four characters in reverse order?
+> 1.  `animal[1:4]` 슬라이스를 사용해서 첫 네개 문자를 선택했다면, 역순으로 첫 네개 문자를 어떻게 얻을 수 있을까?
 >
-> 1.  What is `animal[-1]`?
->    What is `animal[-4]`?
->    Given those answers,
->    explain what `animal[-1:-4]` does.
+> 1.  `animal[-1]`의 값은 무엇일까? 
+>      `animal[-4]`의 값은 무엇일까? 
+>      상기 해답이 주어졌을 때, `animal[-1:-4]`은 무엇이 될지 설명해 보세요.
 >
-> 1.  Use a slice of `animal` to create a new character vector that spells the word "eon", i.e. `c("e", "o", "n")`.
+> 1.  `animal` 슬라이스를 사용해서 단어 "eon"을 예를 들어 `c("e", "o", "n")` 처럼 작성하는 새로운 문자 벡터를 생성하세요.
 
 
-> ## Challenge - Subsetting data 2 {.challenge}
+> ## 도전과제 - 데이터 부분집합 2 {.challenge}
 >
-> Suppose you want to determine the maximum inflamation for patient 5 across days three to seven.
-> To do this you would extract the relevant slice from the data frame and calculate the maximum value.
-> Which of the following lines of R code gives the correct answer?
+> 5번째 환자에 대해서 3일에서 7일에 걸친 최대 염증값을 알아내고자 한다고 가정하자.
+> 이 작업을 위해서, 데이터프레임으로부터 연관된 슬라이스를 뽑아내고 최대값을 계산한다.
+> 다음 R 코드 중 어떤 것이 올바른 정답을 제시하나요?
 >
 > (a) `max(dat[5, ])`
 > (b) `max(dat[3:7, 5])`
 > (c) `max(dat[5, 3:7])`
 > (d) `max(dat[5, 3, 7])`
 
-### Plotting
+### 도식화(Plotting)
 
-The mathematician Richard Hamming once said, "The purpose of computing is insight, not numbers," and the best way to develop insight is often to visualize data.
-Visualization deserves an entire lecture (or course) of its own, but we can explore a few of R's plotting features.
+수학자 Richard Hamming은 "컴퓨팅의 목적은 숫자가 아니라 직관(insight)이다."라고 말했다.
+그래서 직관을 키우는 가장 좋은 방법은 흔히 데이터를 시각화하는 것이다. 
+시각화에 대해 그 자체로 전체 강의를 펼칠만 하지만, 여기서는 R의 도식화 기능 몇가지만 살펴본다.
 
-Let's take a look at the average inflammation over time.
-Recall that we already calculated these values above using `apply(dat, 2, mean)` and saved them in the variable `avg_day_inflammation`.
-Plotting the values is done with the function `plot`.
-
+시간에 따른 평균 염증값을 살펴보자. 
+`apply(dat, 2, mean)`을 사용해서 이미 값을 계산해서, 
+변수 `avg_day_inflammation`에 저장했다. 
+이를 그래프로 도식화하는 것을 `plot` 함수로 할 수 있다:
 
 ~~~{.r}
 plot(avg_day_inflammation)
@@ -602,11 +530,11 @@ plot(avg_day_inflammation)
 
 <img src="fig/01-starting-with-data-plot-avg-inflammation-1.png" title="plot of chunk plot-avg-inflammation" alt="plot of chunk plot-avg-inflammation" style="display: block; margin: auto;" />
 
-Above, we gave the function `plot` a vector of numbers corresponding to the average inflammation per day across all patients.
-`plot` created a scatter plot where the y-axis is the average inflammation level and the x-axis is the order, or index, of the values in the vector, which in this case correspond to the 40 days of treatment.
-The result is roughly a linear rise and fall, which is suspicious: based on other studies, we expect a sharper rise and slower fall.
-Let's have a look at two other statistics: the maximum and minimum inflammation per day.
-
+위에서 `plot` 함수에 모든 환자에 대한 일별 평균 염증값에 대응되는 숫자 벡터를 전달했다. 
+`plot` 함수는 Y축에 평균 염증 수준과 X축에 이 경우 40일 처방에 해당하는 벡터값의 순서, 즉 인덱스를 두고 산점도(scatter plot)를 생성했다. 
+결과는 대략 선형적으로 올라가고 내려가지만 의심스럽다. 
+다른 연구 결과에 따르면, 좀더 빠른 급격한 상승과 좀더 완만한 하강이 예측됐다. 
+또 다른 통계량 두개(일자별 최대 그리고 최소 염증값)을 살펴보자.
 
 ~~~{.r}
 max_day_inflammation <- apply(dat, 2, max)
@@ -615,7 +543,6 @@ plot(max_day_inflammation)
 
 <img src="fig/01-starting-with-data-plot-max-inflammation-1.png" title="plot of chunk plot-max-inflammation" alt="plot of chunk plot-max-inflammation" style="display: block; margin: auto;" />
 
-
 ~~~{.r}
 min_day_inflammation <- apply(dat, 2, min)
 plot(min_day_inflammation)
@@ -623,29 +550,34 @@ plot(min_day_inflammation)
 
 <img src="fig/01-starting-with-data-plot-min-inflammation-1.png" title="plot of chunk plot-min-inflammation" alt="plot of chunk plot-min-inflammation" style="display: block; margin: auto;" />
 
-The maximum value rises and falls perfectly smoothly, while the minimum seems to be a step function. Neither result seems particularly likely, so either there's a mistake in our calculations or something is wrong with our data.
+최소값은 계단 함수(Step function) 모양으로 보이지만, 최대값은 완벽하게 매끄럽게 상승하고 하강하고 있다. 
+어느쪽의 결과도 그럴듯하게 보이지 않아서, 
+계산에서 실수가 있거나 데이터에 무언가 잘못된 것이 있다.
 
-> ## Challenge - Plotting data {.challenge}
+> ## 도전과제 - 데이터 도식화 {.challenge}
 >
-> Create a plot showing the standard deviation of the inflammation data for each day across all patients.
+> 모든 환자에 대해서 각 일자별로 염증 데이터의 표준편차를 보이는 그래프를 생성하세요.
 
-> ## Key Points {.callout}
+> ## 주요점 {.callout}
 >
-> * Use `variable <- value` to assign a value to a variable in order to record it in memory.
-> * Objects are created on demand whenever a value is assigned to them.
-> * The function `dim` gives the dimensions of a data frame.
-> * Use `object[x, y]` to select a single element from a data frame.
-> * Use `from:to` to specify a sequence that includes the indices from `from` to
->`to`. 
-> * All the indexing and slicing that works on data frames also works on vectors.
-> * Use `#` to add comments to programs.
-> * Use `mean`, `max`, `min` and `sd` to calculate simple statistics.
-> * Use `apply` to calculate statistics across the rows or columns of a data frame.
-> * Use `plot` to create simple visualizations.
+> * 주기억장소에 저장하기 위해서 변수에 값을 할당할 때 `variable <- value` 을 사용하라.
+> * 객체는 값이 변수에 할당될 때마다 주문형으로 생성된다.
+> * `dim` 함수는 데이터프레임의 차원 정보를 준다.
+> * 데이터프레임에서 요소를 하나 끄집어 낼때 `object[x, y]`을 사용한다.
+> * `from:to`를 사용해서 시작(from)과 끝(to) 인덱스를 포함하는 시퀀스(sequence)를 표기한다.
+> * 데이터프레임에서 동작하는 인덱스(index)와 슬라이스(slice)는 벡터(vector)에도 적용된다.
+> * `#`을 프로그램 주석으로 사용한다.
+> * 간단한 통계치를 계산하기 위해서 `mean`, `max`, `min`, `sd` 함수를 사용한다.
+> * `apply` 함수를 사용해서 데이터프레임 행 혹은 열의 통계치를 계산한다.
+> * `plot`를 사용해서 간단한 시각화 그래프를 생성한다.
 
-> ## Next Steps {.callout}
+
+> ## 다음 단계 {.callout}
 >
-> Our work so far has convinced us that something's wrong with our first data file.
-> We would like to check the other 11 the same way, but typing in the same commands repeatedly is tedious and error-prone.
-> Since computers don't get bored (that we know of), we should create a way to do a complete analysis with a single command, and then figure out how to repeat that step once for each file.
-> These operations are the subjects of the next two lessons.
+> 지금까지 작업 결과를 통해 데이터 파일에 뭔가 잘못된 것이 있다는 것을 확인했다. 
+> 다른 11개 파일도 같은 방식으로 확인하고자 하지만, 
+> 동일한 명령어를 반복적으로 타이핑하는 것은 지루하고 오류에 쉽게 노출된다. 
+> 우리가 알고 있는 한 컴퓨터는 지루함을 모르기 때문에, 
+> 단일 명령어로 전체 분석을 수행할 수 있는 방법을 생성하고 나서, 
+> 각 파일마다 해당 단계를 어떻게 반복하는지를 해결해야 한다. 
+> 이런 작업이 다음 두 학습 주제다.
