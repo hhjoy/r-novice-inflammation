@@ -79,8 +79,18 @@ R을 사용해서 학습을 진행한다. 왜냐하면,
 *   [강사 안내서](instructors.html)
 
 ## 보충 학습
+|   한국어(Korean)      |    영어(English)            |
+|--------------------------------|-----------------------------------|
+|*  [RStudio 소개](01-supp-intro-rstudio-kr.html)         |*  [Introduction to RStudio](01-supp-intro-rstudio.html)|
+|*  [데이터 다루기](01-supp-addressing-data-kr.html)    |*  [Addressing data](01-supp-addressing-data.html)|
+|*  [요인 이해하기](01-supp-factors-kr.html)                  |*  [Understanding factors](01-supp-factors.html)|
+|*  [자료형과 자료구조](01-supp-data-structures-kr.html)|*  [Data types and structures](01-supp-data-structures.html)|
 
-*   [RStudio 소개](01-supp-intro-rstudio.html)
-*   [데이터 다루기](01-supp-addressing-data.html)
-*   [요인(factor) 이해하기](01-supp-factors.html)
-*   [자료형과 자료구조](01-supp-data-structures.html)
+
+
+
+
+
+
+
+
