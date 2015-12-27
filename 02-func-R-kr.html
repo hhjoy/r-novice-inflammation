@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="pandoc">
+    <title>Software Carpentry: R 프로그래밍</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="css/swc.css" />
+    <link rel="alternate" type="application/rss+xml" title="Software Carpentry Blog" href="http://software-carpentry.org/feed.xml"/>
+    <meta charset="UTF-8" />
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body class="lesson">
+    <div class="container card">
+      <div class="banner">
+        <a href="http://software-carpentry.org" title="Software Carpentry">
+          <img alt="Software Carpentry banner" src="img/software-carpentry-banner.png" />
+        </a>
+      </div>
+      <article>
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+                    <a href="index.html"><h1 class="title">R 프로그래밍</h1></a>
+          <h2 class="subtitle">함수 생성하기</h2>
+          <section class="objectives panel panel-warning">
+<div class="panel-heading">
+<h2 id="학습-목표"><span class="glyphicon glyphicon-certificate"></span>학습 목표</h2>
+</div>
+<div class="panel-body">
+<ul>
+<li>인자(argument)를 받는 함수를 작성한다.</li>
+<li>함수에서 값을 반환한다.</li>
+<li>함수를 테스트한다.</li>
+<li>콜 스택(call stack)이 무엇인지 설명하고 함수가 호출될때 콜 스택에 변경사항을 추적한다.</li>
+<li>함수 인자에 대한 디폴트 값을 설정한다.</li>
+<li>왜 프로그램을 작게, 단일 목적 함수로 잘게 쪼개는지 설명한다.</li>
+</ul>
+</div>
+</section>
+<p>만약 분석할 데이터셋이 하나라면, 파일을 스프레드쉬트에 올려서 간단한 통계치를 구하고, 그래프를 그리는 것이 아마도 휠씬 빠르다. 하지만, 확인할 파일이 12개나 되고, 앞으로 더 늘어난다면 얘기는 달라진다. 이번 학습에서 함수를 어떻게 작성하는지 배워서 하나의 명령어로 작업 몇개를 반복처리할 수 있다.</p>
+<h3 id="함수-정의-하기">함수 정의 하기</h3>
+<p>화씨(Fahrenheit)에서 절대온도(Kelvin)로 온도를 변환하는 <code>fahr_to_kelvin</code> 함수를 정의하는 것부터 시작하자:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fahr_to_kelvin &lt;-<span class="st"> </span>function(temp) {
+  kelvin &lt;-<span class="st"> </span>((temp -<span class="st"> </span><span class="dv">32</span>) *<span class="st"> </span>(<span class="dv">5</span> /<span class="st"> </span><span class="dv">9</span>)) +<span class="st"> </span><span class="fl">273.15</span>
+  <span class="kw">return</span>(kelvin)
+}</code></pre></div>
+<p><code>fahr_to_kelvin</code> 함수를 정의하고, <code>function</code> 출력결과를 함수에 할당한다. 인자이름 목록은 괄호에 포함된다. 다음에 함수 <a href="reference.html#function-body">몸통부문(body)</a>은 함수가 수행될 때 실행되는 문장(스테이트먼트, statement)으로 중괄호(<code>{}</code>) 내부에 포함된다. 몸통부문의 문장은 공백 2개로 들여쓰기 된다. 들여쓰기는 코드를 읽기 쉽게 하지만, 코드가 어떻게 동작하는지에는 영향을 주지 않는다.</p>
+<p>함수를 호출할 때, 함수에 전달하는 값은 변수에 할당되어서 함수 내부에서 사용할 수 있다. 함수 내부에, <a href="reference.html#return-statement">반환 문장(return statement)</a>을 사용해서 요청하는 곳에 결과를 반환한다.</p>
+<aside class="callout panel panel-info">
+<div class="panel-heading">
+<h2 id="조언"><span class="glyphicon glyphicon-pushpin"></span>조언</h2>
+</div>
+<div class="panel-body">
+<p>R에서, 반환문장(return statement)을 포함하는 것이 반드시 필요하지는 않다. R은 자동적으로 함수 몸통부문 마지막 행에 있는 임의 변수를 반환한다. 지금은 학습 단계로, 명시적으로 반환문장을 정의한다.</p>
+</div>
+</aside>
+<p>상기 함수를 실행하자. 본인이 작성한 함수를 호출하는 것은 다른 어떤 함수를 호출하는 것과 별반 차이가 없다:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 물에 대한 냉각점</span>
+<span class="kw">fahr_to_kelvin</span>(<span class="dv">32</span>)</code></pre></div>
+<pre class="output"><code>[1] 273.15</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 물에 대한 끓는점</span>
+<span class="kw">fahr_to_kelvin</span>(<span class="dv">212</span>)</code></pre></div>
+<pre class="output"><code>[1] 373.15</code></pre>
+<p>정의한 함수를 성공적으로 호출해서, 반환한 값에 접근할 수 있다.</p>
+<h3 id="함수-조합하기">함수 조합하기</h3>
+<p>화씨온도를 절대온도로 어떻게 변환하는지 봤기 때문에, 절대온도를 섭씨온도로 바꾸는 것은 쉽다:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">kelvin_to_celsius &lt;-<span class="st"> </span>function(temp) {
+  celsius &lt;-<span class="st"> </span>temp -<span class="st"> </span><span class="fl">273.15</span>
+  <span class="kw">return</span>(celsius)
+}
+
+<span class="co"># 섭씨에서 영도</span>
+<span class="kw">kelvin_to_celsius</span>(<span class="dv">0</span>)</code></pre></div>
+<pre class="output"><code>[1] -273.15</code></pre>
+<p>화씨온도에서 섭씨온도로 변환하는 것은 어떤가요? 공식을 적을 수도 있지만, 그럴 필요가 없다. 이미 작성한 두개의 함수를 <a href="reference.html#function-composition">조합(compose)</a> 할 수 있다:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fahr_to_celsius &lt;-<span class="st"> </span>function(temp) {
+  temp_k &lt;-<span class="st"> </span><span class="kw">fahr_to_kelvin</span>(temp)
+  result &lt;-<span class="st"> </span><span class="kw">kelvin_to_celsius</span>(temp_k)
+  <span class="kw">return</span>(result)
+}
+
+<span class="co"># 섭씨온도로 물에 대한 냉각점</span>
+<span class="kw">fahr_to_celsius</span>(<span class="fl">32.0</span>)</code></pre></div>
+<pre class="output"><code>[1] 0</code></pre>
+<p>어떻게 더 커다란 프로그램이 만들어지는지 첫번째로 맛을 봤다: 기본 연산을 정의하고, 함수를 조합해서 더큰 덩어리로 만들어 원하는 효과를 얻었다. 실제 함수는 상기 보여진 것보다 더 크다 – 일반적으로 대략 6줄에서 20~30줄 정도 한다. 하지만 이보다 함수가 더 길거나 하면, 함수를 읽는 사람이 어떻게 동작하는지 이해할수 없게 되면 곤란하다.</p>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2 id="도전-과제---함수-생성하기"><span class="glyphicon glyphicon-pencil"></span>도전 과제 - 함수 생성하기</h2>
+</div>
+<div class="panel-body">
+<ul>
+<li>마지막 학습에서 <code>c</code> 함수를 사용해서 벡터에 요소(element)를 결합(concatenate)하는 것을 배웠다. 예를 들어, <code>x &lt;- c(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;)</code> 문장은 요소 3개를 갖는 벡터 <code>x</code>를 생성한다. 좀더 나아가, <code>c</code>를 사용해서 상기 벡터를 확장할 수 있다. 예를 들어, <code>y &lt;- c(x, &quot;D&quot;)</code> 문장은 요소 4개를 갖는 벡터 <code>y</code>를 생성한다. <code>original</code>과 <code>wrapper</code> 벡터 두개를 인자로 받는 <code>fence</code> 함수를 작성하세요. <code>fence</code> 함수는 <code>original</code> 앞과 뒤를 감싸는 새로운 벡터를 반환한다:</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">best_practice &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Write&quot;</span>, <span class="st">&quot;programs&quot;</span>, <span class="st">&quot;for&quot;</span>, <span class="st">&quot;people&quot;</span>, <span class="st">&quot;not&quot;</span>, <span class="st">&quot;computers&quot;</span>)
+asterisk &lt;-<span class="st"> &quot;***&quot;</span>  <span class="co"># R은 단일 값을 갖는 변수를 요소 하나를 갖는 벡터로 해석한다.</span>
+<span class="kw">fence</span>(best_practice, asterisk)</code></pre></div>
+<pre class="output"><code>[1] &quot;***&quot;       &quot;Write&quot;     &quot;programs&quot;  &quot;for&quot;       &quot;people&quot;    &quot;not&quot;      
+[7] &quot;computers&quot; &quot;***&quot;      </code></pre>
+<ul>
+<li>변수 <code>v</code>가 벡터를 참조한다면, <code>v[1]</code>은 벡터의 첫번째 요소이고, <code>v[length(v)]</code>은 벡터의 마지막 요소가 된다. 함수 <code>length</code>는 벡터의 요소 갯수를 반환한다. 입력값의 첫번째와 마지막 요소로만 구성된 벡터를 반환하는 <code>outer</code> 함수를 작성하세요.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dry_principle &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Don&#39;t&quot;</span>, <span class="st">&quot;repeat&quot;</span>, <span class="st">&quot;yourself&quot;</span>, <span class="st">&quot;or&quot;</span>, <span class="st">&quot;others&quot;</span>)
+<span class="kw">outside</span>(dry_principle)</code></pre></div>
+<pre class="output"><code>[1] &quot;Don&#39;t&quot;  &quot;others&quot;</code></pre>
+</div>
+</section>
+<h3 id="콜-스택call-stack">콜 스택(Call Stack)</h3>
+<p><code>fahr_to_celsius(32)</code>을 호출할 때 무슨 일이 생기는지 좀더 자세히 살펴보자. 좀더 명확하기 하기 위해서, 변수에 초기값을 32로 설정하고 결과를 <code>final</code>에 저장해서 출발해 봅시다:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">original &lt;-<span class="st"> </span><span class="dv">32</span>
+final &lt;-<span class="st"> </span><span class="kw">fahr_to_celsius</span>(original)</code></pre></div>
+<p>다음 다이어그램은 첫번째 행이 실행된 다음에 메모리가 어떻게 되지는 보여준다:</p>
+<p><img src="fig/python-call-stack-01.svg" alt="Call Stack (Initial State)" /></p>
+<p>함수 <code>fahr_to_celsius</code>을 호출할 때, R은 변수 <code>temp</code>를 바로 생성하지는 <em>않는다</em>. 대신에 <a href="reference.html#stack-frame">스택 프레임(stack frame)</a>에 무언가를 생성해서, <code>fahr_to_kelvin</code>함수가 정의한 변수를 추적한다. 초기에 스택 프레임은 <code>temp</code> 값만을 가지고 있다:</p>
+<p><img src="fig/python-call-stack-02.svg" alt="Call Stack Immediately After First Function Call" /></p>
+<p><code>fahr_to_celsius</code> 함수 내부에 <code>fahr_to_kelvin</code> 함수를 호출할 때, R은 또 다른 스택 프레임을 생성해서 <code>fahr_to_kelvin</code>의 변수를 저장한다:</p>
+<p><img src="fig/python-call-stack-03.svg" alt="Call Stack During First Nested Function Call" /></p>
+<p>이제 <code>temp</code>로 불리는 살아있는 변수가 두개 있다: 하나는 <code>fahr_to_celsius</code> 함수에 대한 인수이고, 다른 하나는 <code>fahr_to_kelvin</code> 함수에 대한 인수다. 프로그램의 같은 부분에 동일한 이름을 가진 변수 두개가 있는 것이 애매모호해서, R(그리고 다른 최신 프로그래밍 언어)은 각 함수 호출에 대해, 새로운 스택 프레임을 생성해서, 다른 함수에서 정의된 변수와 구별되게 함수의 변수를 보관한다.</p>
+<p><code>fahr_to_kelvin</code> 함수에 대한 호출이 값을 반환할 때, R은 <code>fahr_to_kelvin</code> 함수 스택 프레임을 사용한 후 버리고, 절대 온도 정보를 보관하기 위해서 <code>fahr_to_celsius</code>에 대한 스택 프레임에 새로운 변수를 생성한다:</p>
+<p><img src="fig/python-call-stack-04.svg" alt="Call Stack After Return From First Nested Function Call" /></p>
+<p>그리고 나서 <code>kelvin_to_celsius</code>을 호출하는데, 함수의 변수를 저장할 스택 프레임을 생성한다는 의미다:</p>
+<p><img src="fig/python-call-stack-05.svg" alt="Call Stack During Call to Second Nested Function" /></p>
+<p>다시 한번, R은 <code>kelvin_to_celsius</code> 함수가 수행완료될 때 스택 프레임을 폐기한다. 그리고 <code>fahr_to_celsius</code> 함수를 위해 스택 프레임에 <code>result</code> 변수를 생성한다:</p>
+<p><img src="fig/python-call-stack-06.svg" alt="Call Stack After Second Nested Function Returns" /></p>
+<p>마지막으로, <code>fahr_to_celsius</code> 함수 수행이 완료될 때, R은 <em>자신의</em> 스택 프레임을 폐기하고 초기 시작한 스택 프레임에 있는 신규 변수 <code>final</code>에 결과값을 넣는다:</p>
+<p><img src="fig/python-call-stack-07.svg" alt="Call Stack After All Functions Have Finished" /></p>
+<p>이 마지막 스택 프레임은 항상 존재한다; 작성한 코드 중에 함수 외부에서 정의한 변수를 간직한다. 간직하지 <em>않는</em> 것은 다양한 스택 프레임에 있었던 변수다. 만약 함수가 수행 종료된 후에 <code>temp</code> 값을 얻고자 한다면, R은 그런 것은 없다고 회답한다:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">temp</code></pre></div>
+<pre class="error"><code>Error in eval(expr, envir, enclos): object &#39;temp&#39; not found</code></pre>
+<aside class="callout panel panel-info">
+<div class="panel-heading">
+<h2 id="조언-1"><span class="glyphicon glyphicon-pushpin"></span>조언</h2>
+</div>
+<div class="panel-body">
+<p>상기 스택 프레임(stack frame)의 설명은 매우 일반적이다. 기본 개념은 여러분이 프로그래밍하는 대부분의 언어를 이해하는데 도움을 줄 것이다. 하지만, 좀더 복잡한 연산을 수행할 때, R에는 활용할 몇가지 독특한 점이 있다. 좀더 고급 개념의 지식이 필요한 어떠한 것도 여기서 작성하지는 않을 것이다. 향후에 R로 함수를 작성하는 것이 편해질 때, <a href="http://cran.r-project.org/doc/manuals/r-release/R-lang.html#Environment-objects">R Language Manual</a> 혹은 Hadley Wickham의 <a href="http://adv-r.had.co.nz/">Advanced R Programming</a>에서 <a href="http://adv-r.had.co.nz/Environments.html">환경장</a>(chapter)에서 좀더 많을 것을 배울 수 있다. 프레임(frame) 대신에 “환경(environment)” 용어를 R에서 사용한다.</p>
+</div>
+</aside>
+<p>왜 이 모든 어려움으로 갈가요? 배열의 최대값과 최소값의 차이를 계산하는 <code>span</code>이라는 함수가 다음에 있다:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">span &lt;-<span class="st"> </span>function(a) {
+  diff &lt;-<span class="st"> </span><span class="kw">max</span>(a) -<span class="st"> </span><span class="kw">min</span>(a)
+  <span class="kw">return</span>(diff)
+}
+
+dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file =</span> <span class="st">&quot;data/inflammation-01.csv&quot;</span>, <span class="dt">header =</span> <span class="ot">FALSE</span>)
+<span class="co"># 염증 데이터에 대한 범위</span>
+<span class="kw">span</span>(dat)</code></pre></div>
+<pre class="output"><code>[1] 20</code></pre>
+<p><code>span</code> 함수는 값을 <code>diff</code> 변수에 할당함에 주목한다. 동일한 이름의 변수(<code>diff</code>)를 매우 잘 사용해서 염증 데이터 정보를 담을 수도 있다:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">diff &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file =</span> <span class="st">&quot;data/inflammation-01.csv&quot;</span>, <span class="dt">header =</span> <span class="ot">FALSE</span>)
+<span class="co"># 염증 데이터에 대한 범위</span>
+<span class="kw">span</span>(diff)</code></pre></div>
+<pre class="output"><code>[1] 20</code></pre>
+<p>함수를 호출한 뒤에 변수 <code>diff</code>가 값 20을 갖게 되는 것이 예상되지 않는다. 그래서 (R이 전역 환경(global environment)으로 부르는) 프로그램 메인 몸통부문에서 하는 것처럼, 변수명 <code>diff</code>는 <code>span</code> 내부에 정의된 동일한 변수를 참조할 수 없다. 이 경우에 변수에 <code>diff</code>와 다른 이름을 아마도 선택할 수 있지만, 변수의 값이 변경되는 경우마다, 무슨 변수명이 사용되었는지를 살펴보기 위해 호출하는 R함수의 모든 코드 행을 읽고 싶지는 않다.</p>
+<p>기본적인 아이디어는 <a href="reference.html#encapsulation">캡슐화(encapsulation)</a>이고, 정확하고 이해하기 쉬운 프로그램을 작성하는 열쇠다. 함수가 하는 일은 몇개의 작업을 하나로 변환하는 것이어서, 무언가를 하고자 할 때마다 수십개에서 수백개의 문장을 수행하는 대신에, 함수 호출 단 하나를 생각한다. 함수가 서로에게 간섭하지 않는다면, 이 방식은 동작한다; 만약 서로 간섭하게 되면, 다시 한번 세부사항에 주의를 기울여야 하고, 이는 급격하게 단기 기억에 과부하를 주게된다.</p>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2 id="도전-과제---콜-스택-따라가기"><span class="glyphicon glyphicon-pencil"></span>도전 과제 - 콜 스택 따라가기</h2>
+</div>
+<div class="panel-body">
+<ul>
+<li>이전에 <code>fence</code>와 <code>outer</code> 함수를 작성했다. 다음을 실행할 때 콜 스택(call stack)이 어떻게 변하는지 다이어그램을 그려보세요:</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">inner_vec &lt;-<span class="st"> &quot;carbon&quot;</span>
+outer_vec &lt;-<span class="st"> &quot;+&quot;</span>
+result &lt;-<span class="st"> </span><span class="kw">outside</span>(<span class="kw">fence</span>(inner_vec, outer_vec))</code></pre></div>
+</div>
+</section>
+<h3 id="testing-and-documenting">Testing and Documenting</h3>
+<p>Once we start putting things in functions so that we can re-use them, we need to start testing that those functions are working correctly. To see how to do this, let’s write a function to center a dataset around a particular value:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">center &lt;-<span class="st"> </span>function(data, desired) {
+  new_data &lt;-<span class="st"> </span>(data -<span class="st"> </span><span class="kw">mean</span>(data)) +<span class="st"> </span>desired
+  <span class="kw">return</span>(new_data)
+}</code></pre></div>
+<p>We could test this on our actual data, but since we don’t know what the values ought to be, it will be hard to tell if the result was correct. Instead, let’s create a vector of 0s and then center that around 3. This will make it simple to see if our function is working as expected:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">z &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)
+z</code></pre></div>
+<pre class="output"><code>[1] 0 0 0 0
+</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">center</span>(z, <span class="dv">3</span>)</code></pre></div>
+<pre class="output"><code>[1] 3 3 3 3
+</code></pre>
+<p>That looks right, so let’s try center on our real data. We’ll center the inflammation data from day 4 around 0:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file =</span> <span class="st">&quot;data/inflammation-01.csv&quot;</span>, <span class="dt">header =</span> <span class="ot">FALSE</span>)
+centered &lt;-<span class="st"> </span><span class="kw">center</span>(dat[, <span class="dv">4</span>], <span class="dv">0</span>)
+<span class="kw">head</span>(centered)</code></pre></div>
+<pre class="output"><code>[1]  1.25 -0.75  1.25 -1.75  1.25  0.25
+</code></pre>
+<p>It’s hard to tell from the default output whether the result is correct, but there are a few simple tests that will reassure us:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># original min</span>
+<span class="kw">min</span>(dat[, <span class="dv">4</span>])</code></pre></div>
+<pre class="output"><code>[1] 0
+</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># original mean</span>
+<span class="kw">mean</span>(dat[, <span class="dv">4</span>])</code></pre></div>
+<pre class="output"><code>[1] 1.75
+</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># original max</span>
+<span class="kw">max</span>(dat[, <span class="dv">4</span>])</code></pre></div>
+<pre class="output"><code>[1] 3
+</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># centered min</span>
+<span class="kw">min</span>(centered)</code></pre></div>
+<pre class="output"><code>[1] -1.75
+</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># centered mean</span>
+<span class="kw">mean</span>(centered)</code></pre></div>
+<pre class="output"><code>[1] 0
+</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># centered max</span>
+<span class="kw">max</span>(centered)</code></pre></div>
+<pre class="output"><code>[1] 1.25
+</code></pre>
+<p>That seems almost right: the original mean was about 1.75, so the lower bound from zero is now about -1.75. The mean of the centered data is 0. We can even go further and check that the standard deviation hasn’t changed:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># original standard deviation</span>
+<span class="kw">sd</span>(dat[, <span class="dv">4</span>])</code></pre></div>
+<pre class="output"><code>[1] 1.067628
+</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># centerted standard deviation</span>
+<span class="kw">sd</span>(centered)</code></pre></div>
+<pre class="output"><code>[1] 1.067628
+</code></pre>
+<p>Those values look the same, but we probably wouldn’t notice if they were different in the sixth decimal place. Let’s do this instead:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># difference in standard deviations before and after</span>
+<span class="kw">sd</span>(dat[, <span class="dv">4</span>]) -<span class="st"> </span><span class="kw">sd</span>(centered)</code></pre></div>
+<pre class="output"><code>[1] 0
+</code></pre>
+<p>Sometimes, a very small difference can be detected due to rounding at very low decimal places. R has a useful function for comparing two objects allowing for rounding errors, <code>all.equal</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(<span class="kw">sd</span>(dat[, <span class="dv">4</span>]), <span class="kw">sd</span>(centered))</code></pre></div>
+<pre class="output"><code>[1] TRUE
+</code></pre>
+<p>It’s still possible that our function is wrong, but it seems unlikely enough that we should probably get back to doing our analysis. We have one more task first, though: we should write some <a href="reference.html#documentation">documentation</a> for our function to remind ourselves later what it’s for and how to use it.</p>
+<p>A common way to put documentation in software is to add <a href="reference.html#comment">comments</a> like this:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">center &lt;-<span class="st"> </span>function(data, desired) {
+  <span class="co"># return a new vector containing the original data centered around the</span>
+  <span class="co"># desired value.</span>
+  <span class="co"># Example: center(c(1, 2, 3), 0) =&gt; c(-1, 0, 1)</span>
+  new_data &lt;-<span class="st"> </span>(data -<span class="st"> </span><span class="kw">mean</span>(data)) +<span class="st"> </span>desired
+  <span class="kw">return</span>(new_data)
+}</code></pre></div>
+<aside class="callout panel panel-info">
+<div class="panel-heading">
+<h2 id="tip"><span class="glyphicon glyphicon-pushpin"></span>Tip</h2>
+</div>
+<div class="panel-body">
+<p>Formal documentation for R functions is written in separate <code>.Rd</code> using a markup language similar to <a href="http://www.latex-project.org/">LaTeX</a>. You see the result of this documentation when you look at the help file for a given function, e.g. <code>?read.csv</code>. The <a href="http://cran.r-project.org/web/packages/roxygen2/vignettes/rd.html">roxygen2</a> package allows R coders to write documentation alongside the function code and then process it into the appropriate <code>.Rd</code> files. You will want to switch to this more formal method of writing documentation when you start writing more complicated R projects.</p>
+</div>
+</aside>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2 id="challenge---a-more-advanced-function"><span class="glyphicon glyphicon-pencil"></span>Challenge - A more advanced function</h2>
+</div>
+<div class="panel-body">
+<ul>
+<li>Write a function called <code>analyze</code> that takes a filename as a argument and displays the three graphs produced in the <a href="01-starting-with-data.html">previous lesson</a> (average, min and max inflammation over time). <code>analyze(&quot;data/inflammation-01.csv&quot;)</code> should produce the graphs already shown, while <code>analyze(&quot;data/inflammation-02.csv&quot;)</code> should produce corresponding graphs for the second data set. Be sure to document your function with comments.</li>
+<li>Write a function <code>rescale</code> that takes a vector as input and returns a corresponding vector of values scaled to lie in the range 0 to 1. (If <span class="math inline"><em>L</em></span> and <span class="math inline"><em>H</em></span> are the lowest and highest values in the original vector, then the replacement for a value <span class="math inline"><em>v</em></span> should be <span class="math inline">(<em>v</em> − <em>L</em>)/(<em>H</em> − <em>L</em>)</span>.) Be sure to document your function with comments.</li>
+<li>Test that your <code>rescale</code> function is working properly using <code>min</code>, <code>max</code>, and <code>plot</code>.</li>
+</ul>
+</div>
+</section>
+<h3 id="defining-defaults">Defining Defaults</h3>
+<p>We have passed arguments to functions in two ways: directly, as in <code>dim(dat)</code>, and by name, as in <code>read.csv(file = &quot;data/inflammation-01.csv&quot;, header = FALSE)</code>. In fact, we can pass the arguments to <code>read.csv</code> without naming them:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/inflammation-01.csv&quot;</span>, <span class="ot">FALSE</span>)</code></pre></div>
+<p>However, the position of the arguments matters if they are not named.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">header =</span> <span class="ot">FALSE</span>, <span class="dt">file =</span> <span class="st">&quot;data/inflammation-01.csv&quot;</span>)
+dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="ot">FALSE</span>, <span class="st">&quot;data/inflammation-01.csv&quot;</span>)</code></pre></div>
+<pre class="error"><code>Error in read.table(file = file, header = header, sep = sep, quote = quote, : &#39;file&#39; must be a character string or connection
+</code></pre>
+<p>To understand what’s going on, and make our own functions easier to use, let’s re-define our <code>center</code> function like this:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">center &lt;-<span class="st"> </span>function(data, <span class="dt">desired =</span> <span class="dv">0</span>) {
+  <span class="co"># return a new vector containing the original data centered around the</span>
+  <span class="co"># desired value (0 by default).</span>
+  <span class="co"># Example: center(c(1, 2, 3), 0) =&gt; c(-1, 0, 1)</span>
+  new_data &lt;-<span class="st"> </span>(data -<span class="st"> </span><span class="kw">mean</span>(data)) +<span class="st"> </span>desired
+  <span class="kw">return</span>(new_data)
+}</code></pre></div>
+<p>The key change is that the second argument is now written <code>desired = 0</code> instead of just <code>desired</code>. If we call the function with two arguments, it works as it did before:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test_data &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)
+<span class="kw">center</span>(test_data, <span class="dv">3</span>)</code></pre></div>
+<pre class="output"><code>[1] 3 3 3 3
+</code></pre>
+<p>But we can also now call <code>center()</code> with just one argument, in which case <code>desired</code> is automatically assigned the default value of <code>0</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">more_data &lt;-<span class="st"> </span><span class="dv">5</span> +<span class="st"> </span>test_data
+more_data</code></pre></div>
+<pre class="output"><code>[1] 5 5 5 5
+</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">center</span>(more_data)</code></pre></div>
+<pre class="output"><code>[1] 0 0 0 0
+</code></pre>
+<p>This is handy: if we usually want a function to work one way, but occasionally need it to do something else, we can allow people to pass an argument when they need to but provide a default to make the normal case easier.</p>
+<p>The example below shows how R matches values to arguments</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">display &lt;-<span class="st"> </span>function(<span class="dt">a =</span> <span class="dv">1</span>, <span class="dt">b =</span> <span class="dv">2</span>, <span class="dt">c =</span> <span class="dv">3</span>) {
+  result &lt;-<span class="st"> </span><span class="kw">c</span>(a, b, c)
+  <span class="kw">names</span>(result) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>)  <span class="co"># This names each element of the vector</span>
+  <span class="kw">return</span>(result)
+}
+
+<span class="co"># no arguments</span>
+<span class="kw">display</span>()</code></pre></div>
+<pre class="output"><code>a b c 
+1 2 3 
+</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># one argument</span>
+<span class="kw">display</span>(<span class="dv">55</span>)</code></pre></div>
+<pre class="output"><code> a  b  c 
+55  2  3 
+</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># two arguments</span>
+<span class="kw">display</span>(<span class="dv">55</span>, <span class="dv">66</span>)</code></pre></div>
+<pre class="output"><code> a  b  c 
+55 66  3 
+</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># three arguments</span>
+<span class="kw">display</span> (<span class="dv">55</span>, <span class="dv">66</span>, <span class="dv">77</span>)</code></pre></div>
+<pre class="output"><code> a  b  c 
+55 66 77 
+</code></pre>
+<p>As this example shows, arguments are matched from left to right, and any that haven’t been given a value explicitly get their default value. We can override this behavior by naming the value as we pass it in:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># only setting the value of c</span>
+<span class="kw">display</span>(<span class="dt">c =</span> <span class="dv">77</span>)</code></pre></div>
+<pre class="output"><code> a  b  c 
+ 1  2 77 
+</code></pre>
+<aside class="callout panel panel-info">
+<div class="panel-heading">
+<h2 id="tip-1"><span class="glyphicon glyphicon-pushpin"></span>Tip</h2>
+</div>
+<div class="panel-body">
+<p>To be precise, R has three ways that arguments supplied</p>
+<p>by you are matched to the <em>formal arguments</em> of the function definition</p>
+<ol style="list-style-type: decimal">
+<li>by complete name,</li>
+<li>by partial name (matching on initial <em>n</em> characters of the argument name), and</li>
+<li>by position.</li>
+</ol>
+<p>Arguments are matched in the manner outlined above in <em>that order</em>: by complete name, then by partial matching of names, and finally by position.</p>
+</div>
+</aside>
+<p>With that in hand, let’s look at the help for <code>read.csv()</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">?read.csv</code></pre></div>
+<p>There’s a lot of information there, but the most important part is the first couple of lines:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">read.csv</span>(file, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">quote =</span> <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span>,
+         <span class="dt">dec =</span> <span class="st">&quot;.&quot;</span>, <span class="dt">fill =</span> <span class="ot">TRUE</span>, <span class="dt">comment.char =</span> <span class="st">&quot;&quot;</span>, ...)</code></pre></div>
+<p>This tells us that <code>read.csv()</code> has one argument, <code>file</code>, that doesn’t have a default value, and six others that do. Now we understand why the following gives an error:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="ot">FALSE</span>, <span class="st">&quot;data/inflammation-01.csv&quot;</span>)</code></pre></div>
+<pre class="error"><code>Error in read.table(file = file, header = header, sep = sep, quote = quote, : &#39;file&#39; must be a character string or connection
+</code></pre>
+<p>It fails because <code>FALSE</code> is assigned to <code>file</code> and the filename is assigned to the argument <code>header</code>.</p>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2 id="challenge---a-function-with-default-argument-values"><span class="glyphicon glyphicon-pencil"></span>Challenge - A function with default argument values</h2>
+</div>
+<div class="panel-body">
+<ul>
+<li>Rewrite the <code>rescale</code> function so that it scales a vector to lie between 0 and 1 by default, but will allow the caller to specify lower and upper bounds if they want. Compare your implementation to your neighbor’s: do the two functions always behave the same way?</li>
+</ul>
+</div>
+</section>
+<aside class="callout panel panel-info">
+<div class="panel-heading">
+<h2 id="key-points"><span class="glyphicon glyphicon-pushpin"></span>Key Points</h2>
+</div>
+<div class="panel-body">
+<ul>
+<li>Define a function using <code>name &lt;- function(...args...) {...body...}</code>.</li>
+<li>Call a function using <code>name(...values...)</code>.</li>
+<li>Each time a function is called, a new stack frame is created on the <a href="reference.html#call-stack">call stack</a> to hold its arguments and local variables.</li>
+<li>R looks for variables in the current stack frame before looking for them at the top level.</li>
+<li>Use <code>help(thing)</code> to view help for something.</li>
+<li>Put comments at the beginning of functions to provide help for that function.</li>
+<li>Annotate your code!</li>
+<li>Specify default values for arguments when defining a function using <code>name = value</code> in the argument list.</li>
+<li>Arguments can be passed by matching based on name, by position, or by omitting them (in which case the default value is used).</li>
+</ul>
+</div>
+</aside>
+<aside class="callout panel panel-info">
+<div class="panel-heading">
+<h2 id="next-steps"><span class="glyphicon glyphicon-pushpin"></span>Next Steps</h2>
+</div>
+<div class="panel-body">
+<p>We now have a function called analyze to visualize a single data set. We could use it to explore all 12 of our current data sets like this:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">analyze</span>(<span class="st">&quot;data/inflammation-01.csv&quot;</span>)
+<span class="kw">analyze</span>(<span class="st">&quot;data/inflammation-02.csv&quot;</span>)
+<span class="co">#...</span>
+<span class="kw">analyze</span>(<span class="st">&quot;data/inflammation-12.csv&quot;</span>)</code></pre></div>
+<p>but the chances of us typing all 12 filenames correctly aren’t great, and we’ll be even worse off if we get another hundred files. What we need is a way to tell R to do something once for each file, and that will be the subject of the next lesson.</p>
+</div>
+</aside>
+        </div>
+      </div>
+      </article>
+      <div class="footer">
+        <a class="label swc-blue-bg" href="http://software-carpentry.org">Software Carpentry</a>
+        <a class="label swc-blue-bg" href="https://github.com/swcarpentry/r-novice-inflammation">Source</a>
+        <a class="label swc-blue-bg" href="mailto:admin@software-carpentry.org">Contact</a>
+        <a class="label swc-blue-bg" href="LICENSE.html">License</a>
+      </div>
+    </div>
+    <!-- Javascript placed at the end of the document so the pages load faster -->
+    <script src="http://software-carpentry.org/v5/js/jquery-1.9.1.min.js"></script>
+    <script src="css/bootstrap/bootstrap-js/bootstrap.js"></script>
+  </body>
+</html>
