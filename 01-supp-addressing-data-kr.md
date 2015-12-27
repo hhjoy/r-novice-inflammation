@@ -272,3 +272,13 @@ x
 > 
 > 상기 데이터셋에서, 성별(Gender)에 대한 값이 대문자  `M, F`와 소문자 `m,f`로 기록되어 있다.
 > 모든 값을 소문자로 전환하도록 인덱스와 할당 연산자를 조합하라.
+>
+> ~~~ {.r}
+> setwd("~/r-novice-inflammation/data")
+> df <- read.csv("sample.csv", header=TRUE)
+> 
+> table(df$Gender)
+> 
+> df[df$Gender %in% c("F"),]$Gender <- 'f'
+> df[df$Gender %in% c("M"),]$Gender <- 'm'
+> ~~~
