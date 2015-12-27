@@ -1,72 +1,61 @@
 ---
 layout: page
-title: Programming with R
-subtitle: Addressing data
+title: R 프로그래밍
+subtitle: 데이터 다루기
 minutes: 20
 ---
 
-
-
-
-> ## Learning Objectives {.objectives}
+> ## 학습 목표 {.objectives}
 >
-> * Understand the 3 different ways R can address data inside a data frame.
-> * Combine different methods for addressing data with the assignment operator to update subsets of data
+> * 데이터프레임 내부 데이터를 R이 다루는 세가지 다른 방식을 이해한다.
+> * 데이터를 다루는 다양한 메쏘드와 데이터 부분집합을 갱신하는 할당 연산자를 조합한다.
 
-R is a powerful language for data manipulation. There are 3 main ways for addressing data inside R objects.
+데이터를 능숙하게 다루는 강력한 언어가 R이다.
+R 객체 내부에 있는 데이터를 다루는데 있어 주요방식이 3가지다.
 
-* By index (slicing)
-* By logical vector
-* By name (columns only)
+* 인덱스 (슬라이싱): Index
+* 논리 벡터: Logical Vector
+* 명칭 (칼럼만 해당): Name
 
-Lets start by loading some sample data:
-
+표본 데이터를 적재해서 시작해 본다:
 
 ~~~{.r}
 dat<-read.csv(file='data/sample.csv',header=TRUE, stringsAsFactors=FALSE)
 ~~~
 
-> ## Tip {.callout} 
+> ## 조언 {.callout} 
 >
-> The first row of this csv file is a list of column names. We used the *header=TRUE* argument to `read.csv` so that R can interpret the file correctly.
-> We are using the *stringsAsFactors=FALSE* argument to override the default behaviour for R. Using factors in R is covered in a separate lesson.
+> csv 파일 첫번째 행이 칼럼명칭 명칭이다.
+> `read.csv` 함수에 인자로 *header=TRUE* 를 사용했다.
+> 그렇게 함으로써 R이 올바르게 파일을 해석할 수 있게 된다.
+> R에 대한 기본디폴트 행동을 *stringsAsFactors=FALSE* 인자로 사용해서 치환한다.
+> R에서 요인(factor) 사용은 별도 학습에서 다뤄진다.
 
-Lets take a look at this data.
-
+적재한 데이터를 살펴보자.
 
 ~~~{.r}
 class(dat)
 ~~~
 
-
-
 ~~~{.output}
 [1] "data.frame"
-
 ~~~
 
-R has loaded the contents of the .csv file into a variable called `dat` which is a `data frame`.
-
+R은 `.csv` 파일 콘텐츠를 `data.frame`인 `dat`라는 변수로 적재했다.
 
 ~~~{.r}
 dim(dat)
 ~~~
 
-
-
 ~~~{.output}
 [1] 100   9
-
 ~~~
 
-The data has 100 rows and 9 columns.
-
+데이터는 행이 100개, 열이 9개로 구성되었다.
 
 ~~~{.r}
 head(dat)
 ~~~
-
-
 
 ~~~{.output}
       ID Gender      Group BloodPressure  Age Aneurisms_q1 Aneurisms_q2
@@ -83,66 +72,57 @@ head(dat)
 4          233          220
 5          222          228
 6          320          294
-
 ~~~
 
-The data is the results of an (not real) experiment, looking at the number of aneurisms that formed in the eyes of patients who undertook 3 different treatments.
+데이터는 (실제가 아닌) 실험 결과로 3가지 다른 처방을 받은 환자의 눈에 생성된 동맥(Aneurisms) 갯수를 볼 수 있다.
 
-### Addressing by Index
+### 인덱스로 다루기: Index
 
-Data can be accessed by index. We have already seen how square brackets `[` can be used to subset (slice) data. The generic format is `dat[row_numbers,column_numbers]`.
+데이터를 인덱스(index)로 접근할 수 있다.
+이미 꺾쇠 기호 `[` 를 사용해서 데이터 부분집합(슬라이스)을 뽑아내는 방법을 살펴봤다.
+일반적인 형식은  `dat[행번호, 열번호]`이다.
 
-> ## Challenge - Selecting values 1 {.challenge}
+> ## 도전 과제 - 값 선택하기 1 {.challenge}
 >
-> What will be returned by `dat[1,1]`?
-
+> `dat[1,1]`에 대한 반환값은 무엇인가?
 
 ~~~{.r}
 dat[1,1]
 ~~~
 
-
-
 ~~~{.output}
 [1] "Sub001"
-
 ~~~
 
-If we leave out a dimension R will interpret this as a request for all values in that dimension.
+만약 차원정보를 생략하면, R은 해당 차원에 대한 모든 값을 요청하는 것으로 해석한다.
 
-> ## Challenge - Selecting values 2 {.challenge}
+> ## 도전 과제 - 값 선택하기 2 {.challenge}
 >
-> What will be returned by `dat[,2]`?
+> `dat[,2]`에 대한 반환값은 무엇인가?
 
-The colon `:` can be used to create a sequence of integers.
-
+콜론 `:`을 사용해서 정수 순열을 생성할 수 있다.
 
 ~~~{.r}
 6:9
 ~~~
 
-
-
 ~~~{.output}
 [1] 6 7 8 9
-
 ~~~
 
-Creates a vector of numbers from 6 to 9.
+6에서 9까지 숫자 벡터를 생성한다.
 
-This can be very useful for addressing data. 
+데이터를 다루는데 이런 기능이 매우 유용하다.
 
-> ## Challenge - Subsetting with sequences {.challenge}
-> Use the colon operator to index just the aneurism count data (columns 6 to 9).
+> ## 도전 과제 - 순열로 부분집합 뽑아내기 {.challenge}
+>
+> 콜론 연산자를 사용해서 동맥 갯수 데이터(칼럼 6에서 9까지)만 색인해서 뽑아낸다.
 
-Finally we can use the `c()` (combine) function to address non-sequential rows and columns.
-
+마지막으로 `c()` (**c**ombine) 함수를 사용해서 비순차적인 행과 열을 다룬다.
 
 ~~~{.r}
 dat[c(1,5,7,9),1:5]
 ~~~
-
-
 
 ~~~{.output}
       ID Gender      Group BloodPressure  Age
@@ -150,44 +130,38 @@ dat[c(1,5,7,9),1:5]
 5 Sub005      m Treatment1           125 19.9
 7 Sub007      f    Control           173 17.7
 9 Sub009      m Treatment2           131 19.4
-
 ~~~
 
-Returns the first 5 columns for patients in rows 1,5,7 & 9
+1,5,7,9 행에 있는 환자에 대해서 첫 5 칼럼을 반환한다.
 
-> ## Challenge - Subsetting non-sequential data {.challenge}
-> Return the Age and Gender values for the first 5 patients.
+> ## 도전 과제 - 비순차적인 데이터 부분집합 뽑아내기 {.challenge}
+>
+> 첫 환자 5명에 대한 연령(Age)과 성별(Gender) 값을 반환하라.
 
-### Addressing by Name
+### 명칭으로 다루기: Name
 
-Columns in an R data frame are named.
-
+R 데이터프레임 칼럼은 명칭이 주어졌다.
 
 ~~~{.r}
 names(dat)
 ~~~
 
-
-
 ~~~{.output}
 [1] "ID"            "Gender"        "Group"         "BloodPressure"
 [5] "Age"           "Aneurisms_q1"  "Aneurisms_q2"  "Aneurisms_q3" 
 [9] "Aneurisms_q4" 
-
 ~~~
 
-> ## Tip {.callout} 
+> ## 조언 {.callout} 
 >
-> If names are not specified e.g. using `headers=FALSE` in a `read.csv()` function, R assigns default names `V1,V2,...,Vn`
+> 만약 명칭이 명세되지 않았다면, 예를 들어 `read.csv()` 함수에 `headers=FALSE`을 사용해서,
+> R은 기본디폴트 명칭을 할당한다: `V1,V2,...,Vn`.
 
-We usually use the `$` operator to address a column by name
-
+통상 `$` 연산자를 사용해서 명칭으로 칼럼을 다룬다.
 
 ~~~{.r}
 dat$Gender
 ~~~
-
-
 
 ~~~{.output}
   [1] "m" "m" "m" "f" "m" "M" "f" "m" "m" "f" "m" "f" "f" "m" "m" "m" "f"
@@ -196,16 +170,13 @@ dat$Gender
  [52] "f" "f" "f" "m" "f" "m" "m" "m" "f" "f" "f" "f" "M" "f" "m" "f" "f"
  [69] "M" "m" "m" "m" "F" "m" "m" "f" "M" "M" "M" "f" "m" "M" "M" "m" "m"
  [86] "f" "f" "f" "m" "m" "f" "m" "F" "f" "m" "m" "F" "m" "M" "M"
-
 ~~~
 
-Named addressing can also be used in square brackets.
+꺾쇠에 명칭으로 데이터를 다루는 것을 사용할 수도 있다.
 
 ~~~{.r}
 head(dat[,c('Age','Gender')])
 ~~~
-
-
 
 ~~~{.output}
    Age Gender
@@ -215,78 +186,62 @@ head(dat[,c('Age','Gender')])
 4 15.7      f
 5 19.9      m
 6 14.3      M
-
 ~~~
 
-> ## Best Practice {.callout} 
+> ## 모범 사례 {.callout} 
 >
-> Best practice is to address columns by name, often you will create or delete columns and the column position will change.
+> 모범 사례는 명칭으로 칼럼을 다루는 것이다.
+> 흔히 칼럼을 생성하거나 삭제하고, 칼럼 위치는 변경된다.
 
-### Logical Indexing
+### 논리적 색인 : Logical Indexing
 
-A logical vector contains only the special values `TRUE` & `FALSE`.
-
+논리적 벡터는 `TRUE` 와 `FALSE` 특수값만 포함한다.
 
 ~~~{.r}
 c(TRUE,TRUE,FALSE,FALSE,TRUE)
 ~~~
 
-
-
 ~~~{.output}
 [1]  TRUE  TRUE FALSE FALSE  TRUE
-
 ~~~
-> ## Tip {.callout} 
+
+> ## 조언 {.callout} 
 >
-> Note the values `TRUE` and `FALSE` are all capital letters and are not quoted.
+> `TRUE` 와 `FALSE` 논리값은 모두 대문자로 인용부호가 없음에 유의한다.
 
-Logical vectors can be created using `relational operators` e.g. `<, >, ==, !=, %in%`.
-
+논리적 벡터는 `관계 연산자(relational operators)`를 사용해서 생성할 수 있다.
+예를 들어, `<, >, ==, !=, %in%`.
 
 ~~~{.r}
 x<-c(1,2,3,11,12,13)
 x < 10
 ~~~
 
-
-
 ~~~{.output}
 [1]  TRUE  TRUE  TRUE FALSE FALSE FALSE
-
 ~~~
-
-
 
 ~~~{.r}
 x %in% 1:10
 ~~~
 
-
-
 ~~~{.output}
 [1]  TRUE  TRUE  TRUE FALSE FALSE FALSE
-
 ~~~
 
-We can use logical vectors to select data from a data frame.
-
+논리 벡터를 사용해서 데이터프레임에서 데이터를 선택해서 뽑아낼 수 있다.
 
 ~~~{.r}
 index <- dat$Group == 'Control'
 dat[index,]$BloodPressure
 ~~~
 
-
-
 ~~~{.output}
  [1] 132 173 129  77 158  81 137 111 135 108 133 139 126 125  99 122 155
 [18] 133  94  98  74 116  97 104 117  90 150 116 108 102
-
 ~~~
 
-Often this operation is written as one line of code:
-
+흔히, 상기 연산을 코드 한줄로 작성한다:
 
 ~~~{.r}
 plot(dat[dat$Group=='Control',]$BloodPressure)
@@ -294,14 +249,14 @@ plot(dat[dat$Group=='Control',]$BloodPressure)
 
 <img src="fig/logical_vectors_indexing2-1.png" title="plot of chunk logical_vectors_indexing2" alt="plot of chunk logical_vectors_indexing2" style="display: block; margin: auto;" />
 
-> ## Challenge - Using logical indexes {.challenge}
-> 1. Create a scatterplot showing BloodPressure for subjects not in the control group.
-> 2. How many ways are there to index this set of subjects?
+> ## 도전 과제 - 논리 인덱스 사용 {.challenge}
+>
+> 1. 대조군에 있지 않는 피험자에 대해서 BloodPressure 정보를 보여주는 산점도를 생성한다.
+> 2. 해당 피험자 집단을 인덱스해서 뽑아내는 방식이 몇개나 있을까?
 
-### Combining Indexing and Assignment
+### 인덱스와 할당 조합하기
 
-The assignment operator `<-` can be combined with indexing.
-
+할당 연산자, `<-`, 를 인덱스와 조합할 수 있다.
 
 ~~~{.r}
 x<-c(1,2,3,11,12,13)
@@ -309,13 +264,11 @@ x[x < 10] <- 0
 x
 ~~~
 
-
-
 ~~~{.output}
 [1]  0  0  0 11 12 13
-
 ~~~
 
-> ## Challenge - Updating a subset of values {.challenge}
-> In this dataset, values for Gender have been recorded as both uppercase `M, F` and lowercase `m,f`. 
-> Combine the indexing and assignment operations to convert all values to lowercase.
+> ## 도전 과제 - 부분집합 값을 갱신하기 {.challenge}
+> 
+> 상기 데이터셋에서, 성별(Gender)에 대한 값이 대문자  `M, F`와 소문자 `m,f`로 기록되어 있다.
+> 모든 값을 소문자로 전환하도록 인덱스와 할당 연산자를 조합하라.

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="generator" content="pandoc">
-    <title>Software Carpentry: Programming with R</title>
+    <title>Software Carpentry: R 프로그래밍</title>
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.css" />
@@ -26,44 +26,42 @@
       <article>
       <div class="row">
         <div class="col-md-10 col-md-offset-1">
-                    <a href="index.html"><h1 class="title">Programming with R</h1></a>
-          <h2 class="subtitle">Addressing data</h2>
+                    <a href="index.html"><h1 class="title">R 프로그래밍</h1></a>
+          <h2 class="subtitle">데이터 다루기</h2>
           <section class="objectives panel panel-warning">
 <div class="panel-heading">
-<h2 id="learning-objectives"><span class="glyphicon glyphicon-certificate"></span>Learning Objectives</h2>
+<h2 id="학습-목표"><span class="glyphicon glyphicon-certificate"></span>학습 목표</h2>
 </div>
 <div class="panel-body">
 <ul>
-<li>Understand the 3 different ways R can address data inside a data frame.</li>
-<li>Combine different methods for addressing data with the assignment operator to update subsets of data</li>
+<li>데이터프레임 내부 데이터를 R이 다루는 세가지 다른 방식을 이해한다.</li>
+<li>데이터를 다루는 다양한 메쏘드와 데이터 부분집합을 갱신하는 할당 연산자를 조합한다.</li>
 </ul>
 </div>
 </section>
-<p>R is a powerful language for data manipulation. There are 3 main ways for addressing data inside R objects.</p>
+<p>데이터를 능숙하게 다루는 강력한 언어가 R이다. R 객체 내부에 있는 데이터를 다루는데 있어 주요방식이 3가지다.</p>
 <ul>
-<li>By index (slicing)</li>
-<li>By logical vector</li>
-<li>By name (columns only)</li>
+<li>인덱스 (슬라이싱): Index</li>
+<li>논리 벡터: Logical Vector</li>
+<li>명칭 (칼럼만 해당): Name</li>
 </ul>
-<p>Lets start by loading some sample data:</p>
+<p>표본 데이터를 적재해서 시작해 본다:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat&lt;-<span class="kw">read.csv</span>(<span class="dt">file=</span><span class="st">&#39;data/sample.csv&#39;</span>,<span class="dt">header=</span><span class="ot">TRUE</span>, <span class="dt">stringsAsFactors=</span><span class="ot">FALSE</span>)</code></pre></div>
 <aside class="callout panel panel-info">
 <div class="panel-heading">
-<h2 id="tip"><span class="glyphicon glyphicon-pushpin"></span>Tip</h2>
+<h2 id="조언"><span class="glyphicon glyphicon-pushpin"></span>조언</h2>
 </div>
 <div class="panel-body">
-<p>The first row of this csv file is a list of column names. We used the <em>header=TRUE</em> argument to <code>read.csv</code> so that R can interpret the file correctly. We are using the <em>stringsAsFactors=FALSE</em> argument to override the default behaviour for R. Using factors in R is covered in a separate lesson.</p>
+<p>csv 파일 첫번째 행이 칼럼명칭 명칭이다. <code>read.csv</code> 함수에 인자로 <em>header=TRUE</em> 를 사용했다. 그렇게 함으로써 R이 올바르게 파일을 해석할 수 있게 된다. R에 대한 기본디폴트 행동을 <em>stringsAsFactors=FALSE</em> 인자로 사용해서 치환한다. R에서 요인(factor) 사용은 별도 학습에서 다뤄진다.</p>
 </div>
 </aside>
-<p>Lets take a look at this data.</p>
+<p>적재한 데이터를 살펴보자.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(dat)</code></pre></div>
-<pre class="output"><code>[1] &quot;data.frame&quot;
-</code></pre>
-<p>R has loaded the contents of the .csv file into a variable called <code>dat</code> which is a <code>data frame</code>.</p>
+<pre class="output"><code>[1] &quot;data.frame&quot;</code></pre>
+<p>R은 <code>.csv</code> 파일 콘텐츠를 <code>data.frame</code>인 <code>dat</code>라는 변수로 적재했다.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(dat)</code></pre></div>
-<pre class="output"><code>[1] 100   9
-</code></pre>
-<p>The data has 100 rows and 9 columns.</p>
+<pre class="output"><code>[1] 100   9</code></pre>
+<p>데이터는 행이 100개, 열이 9개로 구성되었다.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(dat)</code></pre></div>
 <pre class="output"><code>      ID Gender      Group BloodPressure  Age Aneurisms_q1 Aneurisms_q2
 1 Sub001      m    Control           132 16.0          114          140
@@ -78,87 +76,81 @@
 3          122          177
 4          233          220
 5          222          228
-6          320          294
-</code></pre>
-<p>The data is the results of an (not real) experiment, looking at the number of aneurisms that formed in the eyes of patients who undertook 3 different treatments.</p>
-<h3 id="addressing-by-index">Addressing by Index</h3>
-<p>Data can be accessed by index. We have already seen how square brackets <code>[</code> can be used to subset (slice) data. The generic format is <code>dat[row_numbers,column_numbers]</code>.</p>
+6          320          294</code></pre>
+<p>데이터는 (실제가 아닌) 실험 결과로 3가지 다른 처방을 받은 환자의 눈에 생성된 동맥(Aneurisms) 갯수를 볼 수 있다.</p>
+<h3 id="인덱스로-다루기-index">인덱스로 다루기: Index</h3>
+<p>데이터를 인덱스(index)로 접근할 수 있다. 이미 꺾쇠 기호 <code>[</code> 를 사용해서 데이터 부분집합(슬라이스)을 뽑아내는 방법을 살펴봤다. 일반적인 형식은 <code>dat[행번호, 열번호]</code>이다.</p>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
-<h2 id="challenge---selecting-values-1"><span class="glyphicon glyphicon-pencil"></span>Challenge - Selecting values 1</h2>
+<h2 id="도전-과제---값-선택하기-1"><span class="glyphicon glyphicon-pencil"></span>도전 과제 - 값 선택하기 1</h2>
 </div>
 <div class="panel-body">
-<p>What will be returned by <code>dat[1,1]</code>?</p>
+<p><code>dat[1,1]</code>에 대한 반환값은 무엇인가?</p>
 </div>
 </section>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat[<span class="dv">1</span>,<span class="dv">1</span>]</code></pre></div>
-<pre class="output"><code>[1] &quot;Sub001&quot;
-</code></pre>
-<p>If we leave out a dimension R will interpret this as a request for all values in that dimension.</p>
+<pre class="output"><code>[1] &quot;Sub001&quot;</code></pre>
+<p>만약 차원정보를 생략하면, R은 해당 차원에 대한 모든 값을 요청하는 것으로 해석한다.</p>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
-<h2 id="challenge---selecting-values-2"><span class="glyphicon glyphicon-pencil"></span>Challenge - Selecting values 2</h2>
+<h2 id="도전-과제---값-선택하기-2"><span class="glyphicon glyphicon-pencil"></span>도전 과제 - 값 선택하기 2</h2>
 </div>
 <div class="panel-body">
-<p>What will be returned by <code>dat[,2]</code>?</p>
+<p><code>dat[,2]</code>에 대한 반환값은 무엇인가?</p>
 </div>
 </section>
-<p>The colon <code>:</code> can be used to create a sequence of integers.</p>
+<p>콜론 <code>:</code>을 사용해서 정수 순열을 생성할 수 있다.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">6</span>:<span class="dv">9</span></code></pre></div>
-<pre class="output"><code>[1] 6 7 8 9
-</code></pre>
-<p>Creates a vector of numbers from 6 to 9.</p>
-<p>This can be very useful for addressing data.</p>
+<pre class="output"><code>[1] 6 7 8 9</code></pre>
+<p>6에서 9까지 숫자 벡터를 생성한다.</p>
+<p>데이터를 다루는데 이런 기능이 매우 유용하다.</p>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
-<h2 id="challenge---subsetting-with-sequences"><span class="glyphicon glyphicon-pencil"></span>Challenge - Subsetting with sequences</h2>
+<h2 id="도전-과제---순열로-부분집합-뽑아내기"><span class="glyphicon glyphicon-pencil"></span>도전 과제 - 순열로 부분집합 뽑아내기</h2>
 </div>
 <div class="panel-body">
-<p>Use the colon operator to index just the aneurism count data (columns 6 to 9).</p>
+<p>콜론 연산자를 사용해서 동맥 갯수 데이터(칼럼 6에서 9까지)만 색인해서 뽑아낸다.</p>
 </div>
 </section>
-<p>Finally we can use the <code>c()</code> (combine) function to address non-sequential rows and columns.</p>
+<p>마지막으로 <code>c()</code> (<strong>c</strong>ombine) 함수를 사용해서 비순차적인 행과 열을 다룬다.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat[<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">9</span>),<span class="dv">1</span>:<span class="dv">5</span>]</code></pre></div>
 <pre class="output"><code>      ID Gender      Group BloodPressure  Age
 1 Sub001      m    Control           132 16.0
 5 Sub005      m Treatment1           125 19.9
 7 Sub007      f    Control           173 17.7
-9 Sub009      m Treatment2           131 19.4
-</code></pre>
-<p>Returns the first 5 columns for patients in rows 1,5,7 &amp; 9</p>
+9 Sub009      m Treatment2           131 19.4</code></pre>
+<p>1,5,7,9 행에 있는 환자에 대해서 첫 5 칼럼을 반환한다.</p>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
-<h2 id="challenge---subsetting-non-sequential-data"><span class="glyphicon glyphicon-pencil"></span>Challenge - Subsetting non-sequential data</h2>
+<h2 id="도전-과제---비순차적인-데이터-부분집합-뽑아내기"><span class="glyphicon glyphicon-pencil"></span>도전 과제 - 비순차적인 데이터 부분집합 뽑아내기</h2>
 </div>
 <div class="panel-body">
-<p>Return the Age and Gender values for the first 5 patients.</p>
+<p>첫 환자 5명에 대한 연령(Age)과 성별(Gender) 값을 반환하라.</p>
 </div>
 </section>
-<h3 id="addressing-by-name">Addressing by Name</h3>
-<p>Columns in an R data frame are named.</p>
+<h3 id="명칭으로-다루기-name">명칭으로 다루기: Name</h3>
+<p>R 데이터프레임 칼럼은 명칭이 주어졌다.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(dat)</code></pre></div>
 <pre class="output"><code>[1] &quot;ID&quot;            &quot;Gender&quot;        &quot;Group&quot;         &quot;BloodPressure&quot;
 [5] &quot;Age&quot;           &quot;Aneurisms_q1&quot;  &quot;Aneurisms_q2&quot;  &quot;Aneurisms_q3&quot; 
-[9] &quot;Aneurisms_q4&quot; 
-</code></pre>
+[9] &quot;Aneurisms_q4&quot; </code></pre>
 <aside class="callout panel panel-info">
 <div class="panel-heading">
-<h2 id="tip-1"><span class="glyphicon glyphicon-pushpin"></span>Tip</h2>
+<h2 id="조언-1"><span class="glyphicon glyphicon-pushpin"></span>조언</h2>
 </div>
 <div class="panel-body">
-<p>If names are not specified e.g. using <code>headers=FALSE</code> in a <code>read.csv()</code> function, R assigns default names <code>V1,V2,...,Vn</code></p>
+<p>만약 명칭이 명세되지 않았다면, 예를 들어 <code>read.csv()</code> 함수에 <code>headers=FALSE</code>을 사용해서, R은 기본디폴트 명칭을 할당한다: <code>V1,V2,...,Vn</code>.</p>
 </div>
 </aside>
-<p>We usually use the <code>$</code> operator to address a column by name</p>
+<p>통상 <code>$</code> 연산자를 사용해서 명칭으로 칼럼을 다룬다.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat$Gender</code></pre></div>
 <pre class="output"><code>  [1] &quot;m&quot; &quot;m&quot; &quot;m&quot; &quot;f&quot; &quot;m&quot; &quot;M&quot; &quot;f&quot; &quot;m&quot; &quot;m&quot; &quot;f&quot; &quot;m&quot; &quot;f&quot; &quot;f&quot; &quot;m&quot; &quot;m&quot; &quot;m&quot; &quot;f&quot;
  [18] &quot;m&quot; &quot;m&quot; &quot;F&quot; &quot;f&quot; &quot;m&quot; &quot;f&quot; &quot;f&quot; &quot;m&quot; &quot;M&quot; &quot;M&quot; &quot;f&quot; &quot;m&quot; &quot;f&quot; &quot;f&quot; &quot;m&quot; &quot;m&quot; &quot;m&quot;
  [35] &quot;m&quot; &quot;f&quot; &quot;f&quot; &quot;m&quot; &quot;M&quot; &quot;m&quot; &quot;f&quot; &quot;m&quot; &quot;m&quot; &quot;m&quot; &quot;f&quot; &quot;f&quot; &quot;M&quot; &quot;M&quot; &quot;m&quot; &quot;m&quot; &quot;m&quot;
  [52] &quot;f&quot; &quot;f&quot; &quot;f&quot; &quot;m&quot; &quot;f&quot; &quot;m&quot; &quot;m&quot; &quot;m&quot; &quot;f&quot; &quot;f&quot; &quot;f&quot; &quot;f&quot; &quot;M&quot; &quot;f&quot; &quot;m&quot; &quot;f&quot; &quot;f&quot;
  [69] &quot;M&quot; &quot;m&quot; &quot;m&quot; &quot;m&quot; &quot;F&quot; &quot;m&quot; &quot;m&quot; &quot;f&quot; &quot;M&quot; &quot;M&quot; &quot;M&quot; &quot;f&quot; &quot;m&quot; &quot;M&quot; &quot;M&quot; &quot;m&quot; &quot;m&quot;
- [86] &quot;f&quot; &quot;f&quot; &quot;f&quot; &quot;m&quot; &quot;m&quot; &quot;f&quot; &quot;m&quot; &quot;F&quot; &quot;f&quot; &quot;m&quot; &quot;m&quot; &quot;F&quot; &quot;m&quot; &quot;M&quot; &quot;M&quot;
-</code></pre>
-<p>Named addressing can also be used in square brackets.</p>
+ [86] &quot;f&quot; &quot;f&quot; &quot;f&quot; &quot;m&quot; &quot;m&quot; &quot;f&quot; &quot;m&quot; &quot;F&quot; &quot;f&quot; &quot;m&quot; &quot;m&quot; &quot;F&quot; &quot;m&quot; &quot;M&quot; &quot;M&quot;</code></pre>
+<p>꺾쇠에 명칭으로 데이터를 다루는 것을 사용할 수도 있다.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(dat[,<span class="kw">c</span>(<span class="st">&#39;Age&#39;</span>,<span class="st">&#39;Gender&#39;</span>)])</code></pre></div>
 <pre class="output"><code>   Age Gender
 1 16.0      m
@@ -166,70 +158,64 @@
 3 19.5      m
 4 15.7      f
 5 19.9      m
-6 14.3      M
-</code></pre>
+6 14.3      M</code></pre>
 <aside class="callout panel panel-info">
 <div class="panel-heading">
-<h2 id="best-practice"><span class="glyphicon glyphicon-pushpin"></span>Best Practice</h2>
+<h2 id="모범-사례"><span class="glyphicon glyphicon-pushpin"></span>모범 사례</h2>
 </div>
 <div class="panel-body">
-<p>Best practice is to address columns by name, often you will create or delete columns and the column position will change.</p>
+<p>모범 사례는 명칭으로 칼럼을 다루는 것이다. 흔히 칼럼을 생성하거나 삭제하고, 칼럼 위치는 변경된다.</p>
 </div>
 </aside>
-<h3 id="logical-indexing">Logical Indexing</h3>
-<p>A logical vector contains only the special values <code>TRUE</code> &amp; <code>FALSE</code>.</p>
+<h3 id="논리적-색인-logical-indexing">논리적 색인 : Logical Indexing</h3>
+<p>논리적 벡터는 <code>TRUE</code> 와 <code>FALSE</code> 특수값만 포함한다.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="ot">TRUE</span>,<span class="ot">TRUE</span>,<span class="ot">FALSE</span>,<span class="ot">FALSE</span>,<span class="ot">TRUE</span>)</code></pre></div>
-<pre class="output"><code>[1]  TRUE  TRUE FALSE FALSE  TRUE
-</code></pre>
+<pre class="output"><code>[1]  TRUE  TRUE FALSE FALSE  TRUE</code></pre>
 <aside class="callout panel panel-info">
 <div class="panel-heading">
-<h2 id="tip-2"><span class="glyphicon glyphicon-pushpin"></span>Tip</h2>
+<h2 id="조언-2"><span class="glyphicon glyphicon-pushpin"></span>조언</h2>
 </div>
 <div class="panel-body">
-<p>Note the values <code>TRUE</code> and <code>FALSE</code> are all capital letters and are not quoted.</p>
+<p><code>TRUE</code> 와 <code>FALSE</code> 논리값은 모두 대문자로 인용부호가 없음에 유의한다.</p>
 </div>
 </aside>
-<p>Logical vectors can be created using <code>relational operators</code> e.g. <code>&lt;, &gt;, ==, !=, %in%</code>.</p>
+<p>논리적 벡터는 <code>관계 연산자(relational operators)</code>를 사용해서 생성할 수 있다. 예를 들어, <code>&lt;, &gt;, ==, !=, %in%</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x&lt;-<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">13</span>)
 x &lt;<span class="st"> </span><span class="dv">10</span></code></pre></div>
-<pre class="output"><code>[1]  TRUE  TRUE  TRUE FALSE FALSE FALSE
-</code></pre>
+<pre class="output"><code>[1]  TRUE  TRUE  TRUE FALSE FALSE FALSE</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x %in%<span class="st"> </span><span class="dv">1</span>:<span class="dv">10</span></code></pre></div>
-<pre class="output"><code>[1]  TRUE  TRUE  TRUE FALSE FALSE FALSE
-</code></pre>
-<p>We can use logical vectors to select data from a data frame.</p>
+<pre class="output"><code>[1]  TRUE  TRUE  TRUE FALSE FALSE FALSE</code></pre>
+<p>논리 벡터를 사용해서 데이터프레임에서 데이터를 선택해서 뽑아낼 수 있다.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">index &lt;-<span class="st"> </span>dat$Group ==<span class="st"> &#39;Control&#39;</span>
 dat[index,]$BloodPressure</code></pre></div>
 <pre class="output"><code> [1] 132 173 129  77 158  81 137 111 135 108 133 139 126 125  99 122 155
-[18] 133  94  98  74 116  97 104 117  90 150 116 108 102
-</code></pre>
-<p>Often this operation is written as one line of code:</p>
+[18] 133  94  98  74 116  97 104 117  90 150 116 108 102</code></pre>
+<p>흔히, 상기 연산을 코드 한줄로 작성한다:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(dat[dat$Group==<span class="st">&#39;Control&#39;</span>,]$BloodPressure)</code></pre></div>
 <p><img src="fig/logical_vectors_indexing2-1.png" title="plot of chunk logical_vectors_indexing2" alt="plot of chunk logical_vectors_indexing2" style="display: block; margin: auto;" /></p>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
-<h2 id="challenge---using-logical-indexes"><span class="glyphicon glyphicon-pencil"></span>Challenge - Using logical indexes</h2>
+<h2 id="도전-과제---논리-인덱스-사용"><span class="glyphicon glyphicon-pencil"></span>도전 과제 - 논리 인덱스 사용</h2>
 </div>
 <div class="panel-body">
 <ol style="list-style-type: decimal">
-<li>Create a scatterplot showing BloodPressure for subjects not in the control group.</li>
-<li>How many ways are there to index this set of subjects?</li>
+<li>대조군에 있지 않는 피험자에 대해서 BloodPressure 정보를 보여주는 산점도를 생성한다.</li>
+<li>해당 피험자 집단을 인덱스해서 뽑아내는 방식이 몇개나 있을까?</li>
 </ol>
 </div>
 </section>
-<h3 id="combining-indexing-and-assignment">Combining Indexing and Assignment</h3>
-<p>The assignment operator <code>&lt;-</code> can be combined with indexing.</p>
+<h3 id="인덱스와-할당-조합하기">인덱스와 할당 조합하기</h3>
+<p>할당 연산자, <code>&lt;-</code>, 를 인덱스와 조합할 수 있다.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x&lt;-<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">13</span>)
 x[x &lt;<span class="st"> </span><span class="dv">10</span>] &lt;-<span class="st"> </span><span class="dv">0</span>
 x</code></pre></div>
-<pre class="output"><code>[1]  0  0  0 11 12 13
-</code></pre>
+<pre class="output"><code>[1]  0  0  0 11 12 13</code></pre>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
-<h2 id="challenge---updating-a-subset-of-values"><span class="glyphicon glyphicon-pencil"></span>Challenge - Updating a subset of values</h2>
+<h2 id="도전-과제---부분집합-값을-갱신하기"><span class="glyphicon glyphicon-pencil"></span>도전 과제 - 부분집합 값을 갱신하기</h2>
 </div>
 <div class="panel-body">
-<p>In this dataset, values for Gender have been recorded as both uppercase <code>M, F</code> and lowercase <code>m,f</code>. Combine the indexing and assignment operations to convert all values to lowercase.</p>
+<p>상기 데이터셋에서, 성별(Gender)에 대한 값이 대문자 <code>M, F</code>와 소문자 <code>m,f</code>로 기록되어 있다. 모든 값을 소문자로 전환하도록 인덱스와 할당 연산자를 조합하라.</p>
 </div>
 </section>
         </div>
