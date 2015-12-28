@@ -203,11 +203,10 @@ y <- c(TRUE, TRUE, FALSE, FALSE)
 z <- c("Sarah", "Tracy", "Jon")
 ```
 
-### Examining Vectors
+### 벡터 조사하기
 
-The functions `typeof()`, `length()`, `class()` and `str()` provide useful
-information about your vectors and R objects in general.
-
+`typeof()`, `length()`, `class()` `str()` 함수는 전반적으로 R 객체와 벡터에 대한
+유용한 정보를 제공하는 역할을 한다.
 
 ```r
 typeof(z)
@@ -241,14 +240,13 @@ str(z)
 ##  chr [1:3] "Sarah" "Tracy" "Jon"
 ```
 
-> ## Challenge - Finding commonalities {.challenge}
+> ## 도전 과제 - 공통성 알아내기 {.challenge}
 >
-> Do you see a property that's common to all these vectors above?
+> 상기 모든 벡터에 대해 공통된 특성을 볼 수 있는가?
 
-### Adding Elements
+### 요소 추가하기
 
-The function `c()` (for combine) can also be used to add elements to a vector.
-
+`c()` (**c**ombine) 함수를 사용해서 벡터에 요소를 추가한다.
 
 ```r
 z <- c(z, "Annette")
@@ -268,10 +266,9 @@ z
 ## [1] "Greg"    "Sarah"   "Tracy"   "Jon"     "Annette"
 ```
 
-### Vectors from a Sequence of Numbers
+### 숫자 순열에서 나온 벡터
 
-You can create vectors as a sequence of numbers.
-
+숫자 순열로 벡터를 생성할 수 있다.
 
 ```r
 series <- 1:10
@@ -296,11 +293,11 @@ seq(from = 1, to = 10, by = 0.1)
 ## [85]  9.4  9.5  9.6  9.7  9.8  9.9 10.0
 ```
 
-### Missing Data
+### 결측값
 
-R supports missing data in vectors. They are represented as `NA` (Not Available)
-and can be used for all the vector types covered in this lesson:
-
+R은 벡터에 결측 데이터 처리 기능을 지원한다.
+결측 데이터는 `NA` (Not Available, 자료없음)으로 표현되고, 이번 학습에 다뤄지는 
+모든 벡터에 사용될 수 있다:
 
 ```r
 x <- c(0.5, NA, 0.7)
@@ -309,10 +306,8 @@ x <- c("a", NA, "c", "d", "e")
 x <- c(1+5i, 2-3i, NA)
 ```
 
-The function `is.na()` indicates the elements of the vectors that represent
-missing data, and the function `anyNA()` returns `TRUE` if the vector contains
-any missing values:
-
+`is.na()` 함수는 결측 데이터를 표현하는 벡터 요소를 표기한다.
+`anyNA()` 함수는 벡터에 어떤 결측값이 포함되면 `TRUE`를 반환한다:
 
 ```r
 x <- c("a", NA, "c", "d", NA)
@@ -348,10 +343,9 @@ anyNA(y)
 ## [1] FALSE
 ```
 
-### Other Special Values
+### 기타 특수값
 
-`Inf` is infinity. You can have either positive or negative infinity.
-
+`Inf`는 무한이다. 양의 무한 혹은 음의 무한일 수 있다.
 
 ```r
 1/0
@@ -361,8 +355,8 @@ anyNA(y)
 ## [1] Inf
 ```
 
-`NaN` means Not a Number. It's an undefined value.
-
+`NaN` 은 숫자가 아님(Not a Number)을 의미한다. 
+`NaN`은 정의되지 않는 값이다.
 
 ```r
 0/0
@@ -372,14 +366,12 @@ anyNA(y)
 ## [1] NaN
 ```
 
-### What Happens When You Mix Types Inside a Vector?
+### 벡터 내부에 자료형이 뒤섞일 때 어떤 일이 생기나요?
 
-R will create a resulting vector with a mode that can most easily accommodate
-all the elements it contains. This conversion between modes of storage is called
-"coercion". When R converts the mode of storage based on its content, it is
-referred to as "implicit coercion". For instance, can you guess what the
-following do (without running them first)?
-
+R은 기본적으로 모든 요소를 가장 쉽게 수용할 수 있는 방식(mode)을 갖는 벡터를 생성한다.
+저장 방식 사이에 이러한 전환을 "강제변환(coercion)"이라고 부른다.
+R이 내용물에 기반해서 저장 방식을 전환할 때, 이를 "암묵적 강제전환(implicit coercion)"이라고 한다.
+예를 들어, 다음 결과가 (실행하지 않고) 어떨 것이라고 추측되나요?
 
 ```r
 xx <- c(1.7, "a")
@@ -387,9 +379,7 @@ xx <- c(TRUE, 2)
 xx <- c("a", TRUE)
 ```
 
-You can also control how vectors are coerced explicitly using the
-`as.<class_name>()` functions:
-
+`as.<class_name>()` 함수를 사용해서, 벡터를 강제변환하는 방식을 명시적으로 제어할 수 있다:
 
 ```r
 as.numeric("1")
@@ -407,19 +397,19 @@ as.character(1:2)
 ## [1] "1" "2"
 ```
 
-### Objects Attributes
+### 객체 속성
 
-Objects can have __attributes__. Attributes are part of the object. These include:
+객체는 __속성(attributes)__을 갖는다.
+속성은 객체의 일부분이다. 속성에는 다음이 포함된다:
 
-* names
-* dimnames
-* dim
-* class
-* attributes (contain metadata)
+* 명칭(names)
+* 차원명칭(dimnames)
+* 차원(dim)
+* 클래스(class)
+* 속성(attributes), 속성은 메타데이터가 담겨진다.
 
-You can also glean other attribute-like information such as length (works on
-vectors and lists) or number of characters (for character strings).
-
+또한 (벡터와 리스트에 동작하는) 길이 혹은 (문자열에 대한 ) 문자 갯수같은 
+속성같은 기타 정보를 얻을 수도 있다.
 
 ```r
 length(1:10)
@@ -437,12 +427,11 @@ nchar("Software Carpentry")
 ## [1] 18
 ```
 
-### Matrix
+### 행렬(Matrix)
 
-In R matrices are an extension of the numeric or character vectors. They are not
-a separate type of object but simply an atomic vector with dimensions; the
-number of rows and columns.
-
+R에서 행렬은 숫자와 문자 벡터의 연장이다.
+행렬은 별도 객체 자료형이 아니라,
+차원을 갖는 원자벡터다; 차원은 행과 열의 숫자다.
 
 ```r
 m <- matrix(nrow = 2, ncol = 2)
@@ -463,25 +452,22 @@ dim(m)
 ## [1] 2 2
 ```
 
-Matrices in R are filled column-wise.
-
+R에서 행렬은 칼럼 방향으로 채워진다.
 
 ```r
 m <- matrix(1:6, nrow = 2, ncol = 3)
 ```
 
-Other ways to construct a matrix
-
+행렬을 구축하는 다른 방식은 다음과 같다.
 
 ```r
 m      <- 1:10
 dim(m) <- c(2, 5)
 ```
 
-This takes a vector and transforms it into a matrix with 2 rows and 5 columns.
+상기 명령어는 벡터를 받아, 이를 행 2개와 열 5개를 갖는 행렬로 변환한다.
 
-Another way is to bind columns or rows using `cbind()` and `rbind()`.
-
+또다른 방식은 `cbind()` 와 `rbind()`를 사용해서 행과 열을 묶는 것이다.
 
 ```r
 x <- 1:3
@@ -506,8 +492,7 @@ rbind(x, y)
 ## y   10   11   12
 ```
 
-You can also use the `byrow` argument to specify how the matrix is filled. From R's own documentation:
-
+`byrow` 인자를 사용해서 행렬이 어떻게 채워질지 명세할 수도 있다.
 
 ```r
 mdat <- matrix(c(1,2,3, 11,12,13), nrow = 2, ncol = 3, byrow = TRUE)
@@ -520,19 +505,21 @@ mdat
 ## [2,]   11   12   13
 ```
 
-### List
+### 리스트
 
-In R lists act as containers. Unlike atomic vectors, the contents of a list are
-not restricted to a single mode and can encompass any mixture of data
-types. Lists are sometimes called generic vectors, because the elements of a
-list can by of any type of R object, even lists containing further lists. This
-property makes them fundamentally different from atomic vectors.
+R에서 리스트는 컨테이너 용기처럼 동작한다.
+원자벡터와 달리, 리스트 내용물은 단일 방식(mode)으로 제한되지 않아서,
+어떤 자료형도 뒤섞어서 망라할 수 있다.
+때때로 리스트를 포괄 벡터(generic vector)라고 부르는데, 
+이유는 리스트의 요소가 R 객체의 어떤 자료형도 될 수 있기 때문이다.
+심지어 리스트를 담는 리스트도 가능하다.
+이러한 속성이 원자벡터와 근본적으로 다른 자료형과 리스트를 차별화한다.
 
-A list is a special type of vector. Each element can be a different type.
+리스트는 특별한 벡터 자료형이다.
+각 요소는 서로 다른 자료형이 될 수 있다.
 
-Create lists using `list()` or coerce other objects using `as.list()`. An empty
-list of the required length can be created using `vector()`
-
+`list()` 함수를 사용하거나, `as.list()`를 사용해서 다른 객체를 강제전환해서 리스트를 생성한다.
+필요한 길이를 갖는 빈 리스트는 `vector()` 함수를 사용해서 생성할 수 있다.
 
 ```r
 x <- list(1, "a", TRUE, 1+4i)
@@ -554,7 +541,7 @@ x
 ```
 
 ```r
-x <- vector("list", length = 5) ## empty list
+x <- vector("list", length = 5) ## 빈 리스트
 length(x)
 ```
 
@@ -580,9 +567,8 @@ length(x)
 ## [1] 10
 ```
 
-1. What is the class of `x[1]`?
-2. What about `x[[1]]`?
-
+1. `x[1]`에 대한 클래스는 무엇이 될까요?
+2. `x[[1]]`에 대한 클래스는 무엇이 될까요?
 
 ```r
 xlist <- list(a = "Karthik Ram", b = 1:10, data = head(iris))
@@ -606,42 +592,39 @@ xlist
 ## 6          5.4         3.9          1.7         0.4  setosa
 ```
 
-1. What is the length of this object? What about its structure?
+1. 상기 객체에 대한 길이는 얼마인가? 구조(structure)는 어떨까?
 
-Lists can be extremely useful inside functions. You can “staple” together lots
-of different kinds of results into a single object that a function can return.
+리스트는 함수 내부에서 극단적으로 유용한다.
+리스틀 사용해서 함수가 반환할 수 있는 객체 단 하나에 다양한 유형의 많은 결과를 한데 묶을 수 있다.
 
-A list does not print to the console like a vector. Instead, each element of the
-list starts on a new line.
+리스트는 벡터처럼 콘솔에 출력하지 않는다.
+대신에, 리스트 각 요소는 개행(newline)에서 시작된다.
 
-Elements are indexed by double brackets. Single brackets will still return
-a(nother) list.
+요소는 이중 꺾쇠로 색인된다. 단일 꺾쇠는 리스트 하나 혹은 또다른 리스트를 반환한다.
 
+### 데이터프레임(Dataframe)
 
-### Data Frame
+데이터프레임은 R에서 매우 중요한 자료형이다.
+대부분의 테이블 형태 데이터와 통계학에서 사용되는 *사실상의 표준(de facto)* 자료구조가 데이터프레임이다.
 
-A data frame is a very important data type in R. It's pretty much the *de facto*
-data structure for most tabular data and what we use for statistics.
+데이터프레임은 리스트에 있는 모든 요소가 동일한 길이를 갖는 특수한 리스트 자료형이다.
 
-A data frame is a special type of list where every element of the list has same length.
+데이터프레임에는 `rownames()` 같은 부가적인 속성이 있을 수 있다.
+`rownames()`은 `subject_id` 혹은 `sample_id` 같이 데이터에 주석을 달 때 유용하다.
+하지만, 대부분의 경우에 사용되지는 않는다.
 
-Data frames can have additional attributes such as `rownames()`, which can be
-useful for annotating data, like `subject_id` or `sample_id`. But most of the
-time they are not used.
+데이터프레임에 추가적인 정보는 다음과 같다:
 
-Some additional information on data frames:
+* `read.csv()`와 `read.table()`로 통상 생성된다.
+* `data.matrix()` (선호됨) 혹은 `as.matrix()` 함수로 행렬을 전환할 수 있다.
+* 강제전환을 강제로 실행할 수는 있다. 항상 기대한 것이 얻어지는 것은 아니다.
+* `data.frame()` 함수로 생성할 수도 있다.
+* `nrow(dat)` 와 `ncol(dat)` 으로 행과 열의 갯수를 각각 알아낸다.
+* 행명칭은 통상 1,2,...,n 이 된다.
 
-* Usually created by `read.csv()` and `read.table()`.
-* Can convert to matrix with `data.matrix()` (preferred) or `as.matrix()`
-* Coercion will be forced and not always what you expect.
-* Can also create with `data.frame()` function.
-* Find the number of rows and columns with `nrow(dat)` and `ncol(dat)`, respectively.
-* Rownames are usually 1, 2, ..., n.
+### 수작업으로 데이터프레임 생성하기
 
-### Creating Data Frames by Hand
-
-To create data frames by hand:
-
+수작업으로 데이터프레임을 생성하려면:
 
 ```r
 dat <- data.frame(id = letters[1:10], x = 1:10, y = 11:20)
@@ -662,19 +645,17 @@ dat
 ## 10  j 10 20
 ```
 
-> ## Useful data frame functions {.callout}
+> ## 유용한 데이터프레임 함수 {.callout}
 >
-> * `head()` - shown first 6 rows
-> * `tail()` - show last 6 rows
-> * `dim()` - returns the dimensions
-> * `nrow()` - number of rows
-> * `ncol()` - number of columns
-> * `str()` - structure of each column
-> * `names()` - shows the `names` attribute for a data frame, which gives the
->column names.
+> * `head()` - 첫행 6개를 보여준다.
+> * `tail()` - 마지막 행 6개를 보여준다.
+> * `dim()` - 차원 정보를 반환한다.
+> * `nrow()` - 행갯수
+> * `ncol()` - 열갯수
+> * `str()` - 각 칼럼 구조
+> * `names()` - 데이터프레임에 대한 `names` 속성을 보여주는데, 칼럼명이 제시된다.
 
-See that it is actually a special list:
-
+실제로 특수 리스트라는 것을 알 수 있다:
 
 ```r
 is.list(iris)
@@ -692,7 +673,7 @@ class(iris)
 ## [1] "data.frame"
 ```
 
-| Dimensions | Homogenous | Heterogeneous |
+| 차원 | 동종 자료형 | 이종 자료형 |
 | ------- | ---- | ---- |
 | 1-D | atomic vector | list |
 | 2-D | matrix | data frame |

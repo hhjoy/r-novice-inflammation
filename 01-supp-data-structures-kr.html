@@ -123,8 +123,8 @@ z</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">y &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>)</code></pre></div>
 <p>반면에, 인용부호를 갖는 텍스트를 사용하면, <code>character</code> 방식 벡터가 생성된다:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">z &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Sarah&quot;</span>, <span class="st">&quot;Tracy&quot;</span>, <span class="st">&quot;Jon&quot;</span>)</code></pre></div>
-<h3 id="examining-vectors">Examining Vectors</h3>
-<p>The functions <code>typeof()</code>, <code>length()</code>, <code>class()</code> and <code>str()</code> provide useful information about your vectors and R objects in general.</p>
+<h3 id="벡터-조사하기">벡터 조사하기</h3>
+<p><code>typeof()</code>, <code>length()</code>, <code>class()</code> <code>str()</code> 함수는 전반적으로 R 객체와 벡터에 대한 유용한 정보를 제공하는 역할을 한다.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">typeof</span>(z)</code></pre></div>
 <pre><code>## [1] &quot;character&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(z)</code></pre></div>
@@ -135,22 +135,22 @@ z</code></pre></div>
 <pre><code>##  chr [1:3] &quot;Sarah&quot; &quot;Tracy&quot; &quot;Jon&quot;</code></pre>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
-<h2 id="challenge---finding-commonalities"><span class="glyphicon glyphicon-pencil"></span>Challenge - Finding commonalities</h2>
+<h2 id="도전-과제---공통성-알아내기"><span class="glyphicon glyphicon-pencil"></span>도전 과제 - 공통성 알아내기</h2>
 </div>
 <div class="panel-body">
-<p>Do you see a property that’s common to all these vectors above?</p>
+<p>상기 모든 벡터에 대해 공통된 특성을 볼 수 있는가?</p>
 </div>
 </section>
-<h3 id="adding-elements">Adding Elements</h3>
-<p>The function <code>c()</code> (for combine) can also be used to add elements to a vector.</p>
+<h3 id="요소-추가하기">요소 추가하기</h3>
+<p><code>c()</code> (<strong>c</strong>ombine) 함수를 사용해서 벡터에 요소를 추가한다.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">z &lt;-<span class="st"> </span><span class="kw">c</span>(z, <span class="st">&quot;Annette&quot;</span>)
 z</code></pre></div>
 <pre><code>## [1] &quot;Sarah&quot;   &quot;Tracy&quot;   &quot;Jon&quot;     &quot;Annette&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">z &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Greg&quot;</span>, z)
 z</code></pre></div>
 <pre><code>## [1] &quot;Greg&quot;    &quot;Sarah&quot;   &quot;Tracy&quot;   &quot;Jon&quot;     &quot;Annette&quot;</code></pre>
-<h3 id="vectors-from-a-sequence-of-numbers">Vectors from a Sequence of Numbers</h3>
-<p>You can create vectors as a sequence of numbers.</p>
+<h3 id="숫자-순열에서-나온-벡터">숫자 순열에서 나온 벡터</h3>
+<p>숫자 순열로 벡터를 생성할 수 있다.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">series &lt;-<span class="st"> </span><span class="dv">1</span>:<span class="dv">10</span>
 <span class="kw">seq</span>(<span class="dv">10</span>)</code></pre></div>
 <pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
@@ -162,13 +162,13 @@ z</code></pre></div>
 ## [57]  6.6  6.7  6.8  6.9  7.0  7.1  7.2  7.3  7.4  7.5  7.6  7.7  7.8  7.9
 ## [71]  8.0  8.1  8.2  8.3  8.4  8.5  8.6  8.7  8.8  8.9  9.0  9.1  9.2  9.3
 ## [85]  9.4  9.5  9.6  9.7  9.8  9.9 10.0</code></pre>
-<h3 id="missing-data">Missing Data</h3>
-<p>R supports missing data in vectors. They are represented as <code>NA</code> (Not Available) and can be used for all the vector types covered in this lesson:</p>
+<h3 id="결측값">결측값</h3>
+<p>R은 벡터에 결측 데이터 처리 기능을 지원한다. 결측 데이터는 <code>NA</code> (Not Available, 자료없음)으로 표현되고, 이번 학습에 다뤄지는 모든 벡터에 사용될 수 있다:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.5</span>, <span class="ot">NA</span>, <span class="fl">0.7</span>)
 x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">NA</span>)
 x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="ot">NA</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;d&quot;</span>, <span class="st">&quot;e&quot;</span>)
 x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>+5i, <span class="dv">2</span>-3i, <span class="ot">NA</span>)</code></pre></div>
-<p>The function <code>is.na()</code> indicates the elements of the vectors that represent missing data, and the function <code>anyNA()</code> returns <code>TRUE</code> if the vector contains any missing values:</p>
+<p><code>is.na()</code> 함수는 결측 데이터를 표현하는 벡터 요소를 표기한다. <code>anyNA()</code> 함수는 벡터에 어떤 결측값이 포함되면 <code>TRUE</code>를 반환한다:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="ot">NA</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;d&quot;</span>, <span class="ot">NA</span>)
 y &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;d&quot;</span>, <span class="st">&quot;e&quot;</span>)
 <span class="kw">is.na</span>(x)</code></pre></div>
@@ -179,39 +179,39 @@ y &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot
 <pre><code>## [1] TRUE</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anyNA</span>(y)</code></pre></div>
 <pre><code>## [1] FALSE</code></pre>
-<h3 id="other-special-values">Other Special Values</h3>
-<p><code>Inf</code> is infinity. You can have either positive or negative infinity.</p>
+<h3 id="기타-특수값">기타 특수값</h3>
+<p><code>Inf</code>는 무한이다. 양의 무한 혹은 음의 무한일 수 있다.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span>/<span class="dv">0</span></code></pre></div>
 <pre><code>## [1] Inf</code></pre>
-<p><code>NaN</code> means Not a Number. It’s an undefined value.</p>
+<p><code>NaN</code> 은 숫자가 아님(Not a Number)을 의미한다. <code>NaN</code>은 정의되지 않는 값이다.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">0</span>/<span class="dv">0</span></code></pre></div>
 <pre><code>## [1] NaN</code></pre>
-<h3 id="what-happens-when-you-mix-types-inside-a-vector">What Happens When You Mix Types Inside a Vector?</h3>
-<p>R will create a resulting vector with a mode that can most easily accommodate all the elements it contains. This conversion between modes of storage is called “coercion”. When R converts the mode of storage based on its content, it is referred to as “implicit coercion”. For instance, can you guess what the following do (without running them first)?</p>
+<h3 id="벡터-내부에-자료형이-뒤섞일-때-어떤-일이-생기나요">벡터 내부에 자료형이 뒤섞일 때 어떤 일이 생기나요?</h3>
+<p>R은 기본적으로 모든 요소를 가장 쉽게 수용할 수 있는 방식(mode)을 갖는 벡터를 생성한다. 저장 방식 사이에 이러한 전환을 “강제변환(coercion)”이라고 부른다. R이 내용물에 기반해서 저장 방식을 전환할 때, 이를 “암묵적 강제전환(implicit coercion)”이라고 한다. 예를 들어, 다음 결과가 (실행하지 않고) 어떨 것이라고 추측되나요?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">xx &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">1.7</span>, <span class="st">&quot;a&quot;</span>)
 xx &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="dv">2</span>)
 xx &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="ot">TRUE</span>)</code></pre></div>
-<p>You can also control how vectors are coerced explicitly using the <code>as.&lt;class_name&gt;()</code> functions:</p>
+<p><code>as.&lt;class_name&gt;()</code> 함수를 사용해서, 벡터를 강제변환하는 방식을 명시적으로 제어할 수 있다:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.numeric</span>(<span class="st">&quot;1&quot;</span>)</code></pre></div>
 <pre><code>## [1] 1</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.character</span>(<span class="dv">1</span>:<span class="dv">2</span>)</code></pre></div>
 <pre><code>## [1] &quot;1&quot; &quot;2&quot;</code></pre>
-<h3 id="objects-attributes">Objects Attributes</h3>
-<p>Objects can have <strong>attributes</strong>. Attributes are part of the object. These include:</p>
+<h3 id="객체-속성">객체 속성</h3>
+<p>객체는 __속성(attributes)__을 갖는다. 속성은 객체의 일부분이다. 속성에는 다음이 포함된다:</p>
 <ul>
-<li>names</li>
-<li>dimnames</li>
-<li>dim</li>
-<li>class</li>
-<li>attributes (contain metadata)</li>
+<li>명칭(names)</li>
+<li>차원명칭(dimnames)</li>
+<li>차원(dim)</li>
+<li>클래스(class)</li>
+<li>속성(attributes), 속성은 메타데이터가 담겨진다.</li>
 </ul>
-<p>You can also glean other attribute-like information such as length (works on vectors and lists) or number of characters (for character strings).</p>
+<p>또한 (벡터와 리스트에 동작하는) 길이 혹은 (문자열에 대한 ) 문자 갯수같은 속성같은 기타 정보를 얻을 수도 있다.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(<span class="dv">1</span>:<span class="dv">10</span>)</code></pre></div>
 <pre><code>## [1] 10</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nchar</span>(<span class="st">&quot;Software Carpentry&quot;</span>)</code></pre></div>
 <pre><code>## [1] 18</code></pre>
-<h3 id="matrix">Matrix</h3>
-<p>In R matrices are an extension of the numeric or character vectors. They are not a separate type of object but simply an atomic vector with dimensions; the number of rows and columns.</p>
+<h3 id="행렬matrix">행렬(Matrix)</h3>
+<p>R에서 행렬은 숫자와 문자 벡터의 연장이다. 행렬은 별도 객체 자료형이 아니라, 차원을 갖는 원자벡터다; 차원은 행과 열의 숫자다.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">ncol =</span> <span class="dv">2</span>)
 m</code></pre></div>
 <pre><code>##      [,1] [,2]
@@ -219,13 +219,13 @@ m</code></pre></div>
 ## [2,]   NA   NA</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(m)</code></pre></div>
 <pre><code>## [1] 2 2</code></pre>
-<p>Matrices in R are filled column-wise.</p>
+<p>R에서 행렬은 칼럼 방향으로 채워진다.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span>:<span class="dv">6</span>, <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">ncol =</span> <span class="dv">3</span>)</code></pre></div>
-<p>Other ways to construct a matrix</p>
+<p>행렬을 구축하는 다른 방식은 다음과 같다.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m      &lt;-<span class="st"> </span><span class="dv">1</span>:<span class="dv">10</span>
 <span class="kw">dim</span>(m) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">5</span>)</code></pre></div>
-<p>This takes a vector and transforms it into a matrix with 2 rows and 5 columns.</p>
-<p>Another way is to bind columns or rows using <code>cbind()</code> and <code>rbind()</code>.</p>
+<p>상기 명령어는 벡터를 받아, 이를 행 2개와 열 5개를 갖는 행렬로 변환한다.</p>
+<p>또다른 방식은 <code>cbind()</code> 와 <code>rbind()</code>를 사용해서 행과 열을 묶는 것이다.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="dv">1</span>:<span class="dv">3</span>
 y &lt;-<span class="st"> </span><span class="dv">10</span>:<span class="dv">12</span>
 <span class="kw">cbind</span>(x, y)</code></pre></div>
@@ -237,16 +237,16 @@ y &lt;-<span class="st"> </span><span class="dv">10</span>:<span class="dv">12</
 <pre><code>##   [,1] [,2] [,3]
 ## x    1    2    3
 ## y   10   11   12</code></pre>
-<p>You can also use the <code>byrow</code> argument to specify how the matrix is filled. From R’s own documentation:</p>
+<p><code>byrow</code> 인자를 사용해서 행렬이 어떻게 채워질지 명세할 수도 있다.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mdat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>, <span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">13</span>), <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">ncol =</span> <span class="dv">3</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)
 mdat</code></pre></div>
 <pre><code>##      [,1] [,2] [,3]
 ## [1,]    1    2    3
 ## [2,]   11   12   13</code></pre>
-<h3 id="list">List</h3>
-<p>In R lists act as containers. Unlike atomic vectors, the contents of a list are not restricted to a single mode and can encompass any mixture of data types. Lists are sometimes called generic vectors, because the elements of a list can by of any type of R object, even lists containing further lists. This property makes them fundamentally different from atomic vectors.</p>
-<p>A list is a special type of vector. Each element can be a different type.</p>
-<p>Create lists using <code>list()</code> or coerce other objects using <code>as.list()</code>. An empty list of the required length can be created using <code>vector()</code></p>
+<h3 id="리스트">리스트</h3>
+<p>R에서 리스트는 컨테이너 용기처럼 동작한다. 원자벡터와 달리, 리스트 내용물은 단일 방식(mode)으로 제한되지 않아서, 어떤 자료형도 뒤섞어서 망라할 수 있다. 때때로 리스트를 포괄 벡터(generic vector)라고 부르는데, 이유는 리스트의 요소가 R 객체의 어떤 자료형도 될 수 있기 때문이다. 심지어 리스트를 담는 리스트도 가능하다. 이러한 속성이 원자벡터와 근본적으로 다른 자료형과 리스트를 차별화한다.</p>
+<p>리스트는 특별한 벡터 자료형이다. 각 요소는 서로 다른 자료형이 될 수 있다.</p>
+<p><code>list()</code> 함수를 사용하거나, <code>as.list()</code>를 사용해서 다른 객체를 강제전환해서 리스트를 생성한다. 필요한 길이를 갖는 빈 리스트는 <code>vector()</code> 함수를 사용해서 생성할 수 있다.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span>, <span class="st">&quot;a&quot;</span>, <span class="ot">TRUE</span>, <span class="dv">1</span>+4i)
 x</code></pre></div>
 <pre><code>## [[1]]
@@ -260,7 +260,7 @@ x</code></pre></div>
 ## 
 ## [[4]]
 ## [1] 1+4i</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">vector</span>(<span class="st">&quot;list&quot;</span>, <span class="dt">length =</span> <span class="dv">5</span>) ## empty list
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">vector</span>(<span class="st">&quot;list&quot;</span>, <span class="dt">length =</span> <span class="dv">5</span>) ## 빈 리스트
 <span class="kw">length</span>(x)</code></pre></div>
 <pre><code>## [1] 5</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x[[<span class="dv">1</span>]]</code></pre></div>
@@ -270,8 +270,8 @@ x &lt;-<span class="st"> </span><span class="kw">as.list</span>(x)
 <span class="kw">length</span>(x)</code></pre></div>
 <pre><code>## [1] 10</code></pre>
 <ol style="list-style-type: decimal">
-<li>What is the class of <code>x[1]</code>?</li>
-<li>What about <code>x[[1]]</code>?</li>
+<li><code>x[1]</code>에 대한 클래스는 무엇이 될까요?</li>
+<li><code>x[[1]]</code>에 대한 클래스는 무엇이 될까요?</li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">xlist &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">a =</span> <span class="st">&quot;Karthik Ram&quot;</span>, <span class="dt">b =</span> <span class="dv">1</span>:<span class="dv">10</span>, <span class="dt">data =</span> <span class="kw">head</span>(iris))
 xlist</code></pre></div>
@@ -290,26 +290,26 @@ xlist</code></pre></div>
 ## 5          5.0         3.6          1.4         0.2  setosa
 ## 6          5.4         3.9          1.7         0.4  setosa</code></pre>
 <ol style="list-style-type: decimal">
-<li>What is the length of this object? What about its structure?</li>
+<li>상기 객체에 대한 길이는 얼마인가? 구조(structure)는 어떨까?</li>
 </ol>
-<p>Lists can be extremely useful inside functions. You can “staple” together lots of different kinds of results into a single object that a function can return.</p>
-<p>A list does not print to the console like a vector. Instead, each element of the list starts on a new line.</p>
-<p>Elements are indexed by double brackets. Single brackets will still return a(nother) list.</p>
-<h3 id="data-frame">Data Frame</h3>
-<p>A data frame is a very important data type in R. It’s pretty much the <em>de facto</em> data structure for most tabular data and what we use for statistics.</p>
-<p>A data frame is a special type of list where every element of the list has same length.</p>
-<p>Data frames can have additional attributes such as <code>rownames()</code>, which can be useful for annotating data, like <code>subject_id</code> or <code>sample_id</code>. But most of the time they are not used.</p>
-<p>Some additional information on data frames:</p>
+<p>리스트는 함수 내부에서 극단적으로 유용한다. 리스틀 사용해서 함수가 반환할 수 있는 객체 단 하나에 다양한 유형의 많은 결과를 한데 묶을 수 있다.</p>
+<p>리스트는 벡터처럼 콘솔에 출력하지 않는다. 대신에, 리스트 각 요소는 개행(newline)에서 시작된다.</p>
+<p>요소는 이중 꺾쇠로 색인된다. 단일 꺾쇠는 리스트 하나 혹은 또다른 리스트를 반환한다.</p>
+<h3 id="데이터프레임dataframe">데이터프레임(Dataframe)</h3>
+<p>데이터프레임은 R에서 매우 중요한 자료형이다. 대부분의 테이블 형태 데이터와 통계학에서 사용되는 <em>사실상의 표준(de facto)</em> 자료구조가 데이터프레임이다.</p>
+<p>데이터프레임은 리스트에 있는 모든 요소가 동일한 길이를 갖는 특수한 리스트 자료형이다.</p>
+<p>데이터프레임에는 <code>rownames()</code> 같은 부가적인 속성이 있을 수 있다. <code>rownames()</code>은 <code>subject_id</code> 혹은 <code>sample_id</code> 같이 데이터에 주석을 달 때 유용하다. 하지만, 대부분의 경우에 사용되지는 않는다.</p>
+<p>데이터프레임에 추가적인 정보는 다음과 같다:</p>
 <ul>
-<li>Usually created by <code>read.csv()</code> and <code>read.table()</code>.</li>
-<li>Can convert to matrix with <code>data.matrix()</code> (preferred) or <code>as.matrix()</code></li>
-<li>Coercion will be forced and not always what you expect.</li>
-<li>Can also create with <code>data.frame()</code> function.</li>
-<li>Find the number of rows and columns with <code>nrow(dat)</code> and <code>ncol(dat)</code>, respectively.</li>
-<li>Rownames are usually 1, 2, …, n.</li>
+<li><code>read.csv()</code>와 <code>read.table()</code>로 통상 생성된다.</li>
+<li><code>data.matrix()</code> (선호됨) 혹은 <code>as.matrix()</code> 함수로 행렬을 전환할 수 있다.</li>
+<li>강제전환을 강제로 실행할 수는 있다. 항상 기대한 것이 얻어지는 것은 아니다.</li>
+<li><code>data.frame()</code> 함수로 생성할 수도 있다.</li>
+<li><code>nrow(dat)</code> 와 <code>ncol(dat)</code> 으로 행과 열의 갯수를 각각 알아낸다.</li>
+<li>행명칭은 통상 1,2,…,n 이 된다.</li>
 </ul>
-<h3 id="creating-data-frames-by-hand">Creating Data Frames by Hand</h3>
-<p>To create data frames by hand:</p>
+<h3 id="수작업으로-데이터프레임-생성하기">수작업으로 데이터프레임 생성하기</h3>
+<p>수작업으로 데이터프레임을 생성하려면:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">id =</span> letters[<span class="dv">1</span>:<span class="dv">10</span>], <span class="dt">x =</span> <span class="dv">1</span>:<span class="dv">10</span>, <span class="dt">y =</span> <span class="dv">11</span>:<span class="dv">20</span>)
 dat</code></pre></div>
 <pre><code>##    id  x  y
@@ -325,21 +325,21 @@ dat</code></pre></div>
 ## 10  j 10 20</code></pre>
 <aside class="callout panel panel-info">
 <div class="panel-heading">
-<h2 id="useful-data-frame-functions"><span class="glyphicon glyphicon-pushpin"></span>Useful data frame functions</h2>
+<h2 id="유용한-데이터프레임-함수"><span class="glyphicon glyphicon-pushpin"></span>유용한 데이터프레임 함수</h2>
 </div>
 <div class="panel-body">
 <ul>
-<li><code>head()</code> - shown first 6 rows</li>
-<li><code>tail()</code> - show last 6 rows</li>
-<li><code>dim()</code> - returns the dimensions</li>
-<li><code>nrow()</code> - number of rows</li>
-<li><code>ncol()</code> - number of columns</li>
-<li><code>str()</code> - structure of each column</li>
-<li><code>names()</code> - shows the <code>names</code> attribute for a data frame, which gives the column names.</li>
+<li><code>head()</code> - 첫행 6개를 보여준다.</li>
+<li><code>tail()</code> - 마지막 행 6개를 보여준다.</li>
+<li><code>dim()</code> - 차원 정보를 반환한다.</li>
+<li><code>nrow()</code> - 행갯수</li>
+<li><code>ncol()</code> - 열갯수</li>
+<li><code>str()</code> - 각 칼럼 구조</li>
+<li><code>names()</code> - 데이터프레임에 대한 <code>names</code> 속성을 보여주는데, 칼럼명이 제시된다.</li>
 </ul>
 </div>
 </aside>
-<p>See that it is actually a special list:</p>
+<p>실제로 특수 리스트라는 것을 알 수 있다:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.list</span>(iris)</code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(iris)</code></pre></div>
@@ -347,9 +347,9 @@ dat</code></pre></div>
 <table>
 <thead>
 <tr class="header">
-<th align="left">Dimensions</th>
-<th align="left">Homogenous</th>
-<th align="left">Heterogeneous</th>
+<th align="left">차원</th>
+<th align="left">동종 자료형</th>
+<th align="left">이종 자료형</th>
 </tr>
 </thead>
 <tbody>
