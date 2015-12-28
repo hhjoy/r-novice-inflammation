@@ -675,5 +675,5 @@ class(iris)
 
 | 차원 | 동종 자료형 | 이종 자료형 |
 | ------- | ---- | ---- |
-| 1-D | atomic vector | list |
-| 2-D | matrix | data frame |
+| 1-D | 원자벡터 | 리스트 |
+| 2-D | 행렬 | 데이터프레임 |
