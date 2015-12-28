@@ -170,225 +170,194 @@ outer_vec &lt;-<span class="st"> &quot;+&quot;</span>
 result &lt;-<span class="st"> </span><span class="kw">outside</span>(<span class="kw">fence</span>(inner_vec, outer_vec))</code></pre></div>
 </div>
 </section>
-<h3 id="testing-and-documenting">Testing and Documenting</h3>
-<p>Once we start putting things in functions so that we can re-use them, we need to start testing that those functions are working correctly. To see how to do this, let’s write a function to center a dataset around a particular value:</p>
+<h3 id="테스팅과-문서화">테스팅과 문서화</h3>
+<p>함수에 명령어들을 넣어서 재사용할 수 있게 되면, 작성한 함수가 제대로 동작하는지 테스트할 필요가 있다. 수행을 어떻게 하는지 알아보기 위해, 데이터셋 중앙을 특정한 값 주위에 위치하게 하는 함수를 작성하자:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">center &lt;-<span class="st"> </span>function(data, desired) {
   new_data &lt;-<span class="st"> </span>(data -<span class="st"> </span><span class="kw">mean</span>(data)) +<span class="st"> </span>desired
   <span class="kw">return</span>(new_data)
 }</code></pre></div>
-<p>We could test this on our actual data, but since we don’t know what the values ought to be, it will be hard to tell if the result was correct. Instead, let’s create a vector of 0s and then center that around 3. This will make it simple to see if our function is working as expected:</p>
+<p>실제 데이터에 작성한 함수를 바로 테스트할 수도 있으나, 값이 무엇이 되어야하는지 모르기 때문에, 결과와 부합되는지 구분하기가 어렵다. 대신에, 0으로 구성된 벡터를 생성하고, 3 주위가 중심이 되게 하자. 매우 간단하게 만들어서 함수가 예상한 대로 동작하는지 살펴보자:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">z &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)
 z</code></pre></div>
-<pre class="output"><code>[1] 0 0 0 0
-</code></pre>
+<pre class="output"><code>[1] 0 0 0 0</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">center</span>(z, <span class="dv">3</span>)</code></pre></div>
-<pre class="output"><code>[1] 3 3 3 3
-</code></pre>
-<p>That looks right, so let’s try center on our real data. We’ll center the inflammation data from day 4 around 0:</p>
+<pre class="output"><code>[1] 3 3 3 3</code></pre>
+<p>맞는 것처럼 보여서, 실제 데이터에 중심을 잡도록 하자. 염증 데이터의 4번째 날을 0 주위에 중심을 잡게 한다:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file =</span> <span class="st">&quot;data/inflammation-01.csv&quot;</span>, <span class="dt">header =</span> <span class="ot">FALSE</span>)
 centered &lt;-<span class="st"> </span><span class="kw">center</span>(dat[, <span class="dv">4</span>], <span class="dv">0</span>)
 <span class="kw">head</span>(centered)</code></pre></div>
-<pre class="output"><code>[1]  1.25 -0.75  1.25 -1.75  1.25  0.25
-</code></pre>
-<p>It’s hard to tell from the default output whether the result is correct, but there are a few simple tests that will reassure us:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># original min</span>
+<pre class="output"><code>[1]  1.25 -0.75  1.25 -1.75  1.25  0.25</code></pre>
+<p>결과가 맞는지 기본디폴트 상기 출력으로부터 분간하기 어렵다. 하지만, 확인을 할 수 있는 몇가지 테스트가 있다:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 원래 최소값</span>
 <span class="kw">min</span>(dat[, <span class="dv">4</span>])</code></pre></div>
-<pre class="output"><code>[1] 0
-</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># original mean</span>
+<pre class="output"><code>[1] 0</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 원래 평균값</span>
 <span class="kw">mean</span>(dat[, <span class="dv">4</span>])</code></pre></div>
-<pre class="output"><code>[1] 1.75
-</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># original max</span>
+<pre class="output"><code>[1] 1.75</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 원래 최대값</span>
 <span class="kw">max</span>(dat[, <span class="dv">4</span>])</code></pre></div>
-<pre class="output"><code>[1] 3
-</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># centered min</span>
+<pre class="output"><code>[1] 3</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 중심으로 변환한 최소값</span>
 <span class="kw">min</span>(centered)</code></pre></div>
-<pre class="output"><code>[1] -1.75
-</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># centered mean</span>
+<pre class="output"><code>[1] -1.75</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 중심으로 변환한 평균값</span>
 <span class="kw">mean</span>(centered)</code></pre></div>
-<pre class="output"><code>[1] 0
-</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># centered max</span>
+<pre class="output"><code>[1] 0</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 중심으로 변환한 최대값</span>
 <span class="kw">max</span>(centered)</code></pre></div>
-<pre class="output"><code>[1] 1.25
-</code></pre>
-<p>That seems almost right: the original mean was about 1.75, so the lower bound from zero is now about -1.75. The mean of the centered data is 0. We can even go further and check that the standard deviation hasn’t changed:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># original standard deviation</span>
+<pre class="output"><code>[1] 1.25</code></pre>
+<p>거의 맞는 것처럼 보인다. 원 평균은 약 1.75였다. 그래서 0에서 하한은 약 -1.75이다. 중앙값이 바뀐 데이터의 평균은 0이다. 좀더 나아가 표준편차가 바뀌었는지 확인하자:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 원래 표준편차</span>
 <span class="kw">sd</span>(dat[, <span class="dv">4</span>])</code></pre></div>
-<pre class="output"><code>[1] 1.067628
-</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># centerted standard deviation</span>
+<pre class="output"><code>[1] 1.067628</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 중심으로 변환한 표준편차</span>
 <span class="kw">sd</span>(centered)</code></pre></div>
-<pre class="output"><code>[1] 1.067628
-</code></pre>
-<p>Those values look the same, but we probably wouldn’t notice if they were different in the sixth decimal place. Let’s do this instead:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># difference in standard deviations before and after</span>
+<pre class="output"><code>[1] 1.067628</code></pre>
+<p>두 값이 동일해 보인다. 하지만, 6번째 소수점에서 차이가 있다면 알아채지 못할 것이다. 대신에 다음을 수행하자:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 변환 전과 후 표준편차 차이</span>
 <span class="kw">sd</span>(dat[, <span class="dv">4</span>]) -<span class="st"> </span><span class="kw">sd</span>(centered)</code></pre></div>
-<pre class="output"><code>[1] 0
-</code></pre>
-<p>Sometimes, a very small difference can be detected due to rounding at very low decimal places. R has a useful function for comparing two objects allowing for rounding errors, <code>all.equal</code>:</p>
+<pre class="output"><code>[1] 0</code></pre>
+<p>때때로, 매우 작은 차이가 소수점 아래에서 반올림 때문에 탐지될 수 있다. R에는 반올림 오차를 고려한 해서 두 객체를 비교하는 유용한 함수(<code>all.equal</code>)가 있다:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(<span class="kw">sd</span>(dat[, <span class="dv">4</span>]), <span class="kw">sd</span>(centered))</code></pre></div>
-<pre class="output"><code>[1] TRUE
-</code></pre>
-<p>It’s still possible that our function is wrong, but it seems unlikely enough that we should probably get back to doing our analysis. We have one more task first, though: we should write some <a href="reference.html#documentation">documentation</a> for our function to remind ourselves later what it’s for and how to use it.</p>
-<p>A common way to put documentation in software is to add <a href="reference.html#comment">comments</a> like this:</p>
+<pre class="output"><code>[1] TRUE</code></pre>
+<p>함수가 잘못될 가능성은 여전히 있다. 하지만, 분석으로 되돌릴 정도는 아닐 듯 하다. 하지만, 한 가지 더 작업이 있다: 후에 작성한 함수가 무엇을 위한 것이고, 어떻게 사용하는지에 대해서 우리 자신에게도 되새김되도록 함수를 <a href="reference.html#documentation">문서화(documentation)</a>한다.</p>
+<p>소프트웨어에 문서를 넣는 일반적인 방법은 다음과 같은 <a href="reference.html#comment">주석(comments)</a>을 추가하는 것이다:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">center &lt;-<span class="st"> </span>function(data, desired) {
-  <span class="co"># return a new vector containing the original data centered around the</span>
-  <span class="co"># desired value.</span>
-  <span class="co"># Example: center(c(1, 2, 3), 0) =&gt; c(-1, 0, 1)</span>
+  <span class="co"># 원하는 값 주위로 원데이터에 대한 중심정보를 담고 있는 새로운 벡터를 반환한다.</span>
+  <span class="co"># 사용례: center(c(1, 2, 3), 0) =&gt; c(-1, 0, 1)</span>
   new_data &lt;-<span class="st"> </span>(data -<span class="st"> </span><span class="kw">mean</span>(data)) +<span class="st"> </span>desired
   <span class="kw">return</span>(new_data)
 }</code></pre></div>
 <aside class="callout panel panel-info">
 <div class="panel-heading">
-<h2 id="tip"><span class="glyphicon glyphicon-pushpin"></span>Tip</h2>
+<h2 id="조언-2"><span class="glyphicon glyphicon-pushpin"></span>조언</h2>
 </div>
 <div class="panel-body">
-<p>Formal documentation for R functions is written in separate <code>.Rd</code> using a markup language similar to <a href="http://www.latex-project.org/">LaTeX</a>. You see the result of this documentation when you look at the help file for a given function, e.g. <code>?read.csv</code>. The <a href="http://cran.r-project.org/web/packages/roxygen2/vignettes/rd.html">roxygen2</a> package allows R coders to write documentation alongside the function code and then process it into the appropriate <code>.Rd</code> files. You will want to switch to this more formal method of writing documentation when you start writing more complicated R projects.</p>
+<p>R함수에 대한 공식 문서는 <a href="http://www.latex-project.org/">LaTeX</a>과 유사한 마크업 언어를 사용해서 별도 <code>.Rd</code> 파일로 작성된다. <code>?read.csv</code> 처럼 주어진 함수에 대한 도움말을 살펴볼 때, 문서화 결과를 보게 된다. <a href="http://cran.r-project.org/web/packages/roxygen2/vignettes/rd.html">roxygen2</a> 패키지는 R 코드 작성자가 함수와 함께 문서를 작성해서 적절한 <code>.Rd</code> 파일을 생성시킨다. 더 복잡한 R 프로젝트에 작업할 때, 좀더 공식적인 방식으로 문서화하도록 전환한다.</p>
 </div>
 </aside>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
-<h2 id="challenge---a-more-advanced-function"><span class="glyphicon glyphicon-pencil"></span>Challenge - A more advanced function</h2>
+<h2 id="도전-과제---더-고급-함수"><span class="glyphicon glyphicon-pencil"></span>도전 과제 - 더 고급 함수</h2>
 </div>
 <div class="panel-body">
 <ul>
-<li>Write a function called <code>analyze</code> that takes a filename as a argument and displays the three graphs produced in the <a href="01-starting-with-data.html">previous lesson</a> (average, min and max inflammation over time). <code>analyze(&quot;data/inflammation-01.csv&quot;)</code> should produce the graphs already shown, while <code>analyze(&quot;data/inflammation-02.csv&quot;)</code> should produce corresponding graphs for the second data set. Be sure to document your function with comments.</li>
-<li>Write a function <code>rescale</code> that takes a vector as input and returns a corresponding vector of values scaled to lie in the range 0 to 1. (If <span class="math inline"><em>L</em></span> and <span class="math inline"><em>H</em></span> are the lowest and highest values in the original vector, then the replacement for a value <span class="math inline"><em>v</em></span> should be <span class="math inline">(<em>v</em> − <em>L</em>)/(<em>H</em> − <em>L</em>)</span>.) Be sure to document your function with comments.</li>
-<li>Test that your <code>rescale</code> function is working properly using <code>min</code>, <code>max</code>, and <code>plot</code>.</li>
+<li>인자로 파일 이름을 받아서 <a href="01-starting-with-data.html">앞선 학습</a> 결과(시간에 따른 염증의 평균값, 최소값, 최대값)를 그래프로 화면에 출력하도록 하는 <code>analyze</code> 함수를 작성한다. <code>analyze(&quot;inflammation-01.csv&quot;)</code> 결과는 이미 보여진 그래프를 생성해야 하지만, <code>analyze(&quot;inflammation-02.csv&quot;)</code> 결과는 두번째 데이터셋에 상응하는 그래프를 생성해야 한다. 주석으로 함수를 문서화하도록 확인한다.</li>
+<li>입력값으로 벡터를 받고, 0에서 1사이의 범위로 조정되게 상응하는 벡터를 반환하는 <code>rescale</code>함수를 작성한다. 만약 <span class="math inline"><em>L</em></span>과 <span class="math inline"><em>H</em></span>가 원래 벡터 하한과 상한이라면, <span class="math inline"><em>v</em></span>의 치환값은 <span class="math inline">(<em>v</em> − <em>L</em>)/(<em>H</em> − <em>L</em>)</span>이 되어야 한다. 주석으로 함수를 문서화하도록 확인한다.</li>
+<li><code>min</code>, <code>max</code>, <code>plot</code> 함수를 사용해서 <code>rescale</code> 함수가 정상적으로 동작하는지 테스트한다.</li>
 </ul>
 </div>
 </section>
-<h3 id="defining-defaults">Defining Defaults</h3>
-<p>We have passed arguments to functions in two ways: directly, as in <code>dim(dat)</code>, and by name, as in <code>read.csv(file = &quot;data/inflammation-01.csv&quot;, header = FALSE)</code>. In fact, we can pass the arguments to <code>read.csv</code> without naming them:</p>
+<h3 id="초기-설정default-정의">초기 설정(Default) 정의</h3>
+<p>두가지 방식으로 함수에 인자를 넘겼다: <code>dim(dat)</code>처럼 직접적으로, <code>read.csv(file = &quot;inflammation-01.csv&quot;, header = FALSE)</code>처럼 이름으로 넘겼다. 사실 인자를 이름없이 <code>read.csv</code> 함수에 넘길 수 있다:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/inflammation-01.csv&quot;</span>, <span class="ot">FALSE</span>)</code></pre></div>
-<p>However, the position of the arguments matters if they are not named.</p>
+<p>하지만, 인자가 이름이 매칭되지 않는다면 인자 위치가 문제가 된다.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">header =</span> <span class="ot">FALSE</span>, <span class="dt">file =</span> <span class="st">&quot;data/inflammation-01.csv&quot;</span>)
 dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="ot">FALSE</span>, <span class="st">&quot;data/inflammation-01.csv&quot;</span>)</code></pre></div>
-<pre class="error"><code>Error in read.table(file = file, header = header, sep = sep, quote = quote, : &#39;file&#39; must be a character string or connection
-</code></pre>
-<p>To understand what’s going on, and make our own functions easier to use, let’s re-define our <code>center</code> function like this:</p>
+<pre class="error"><code>Error in read.table(file = file, header = header, sep = sep, quote = quote, : &#39;file&#39; must be a character string or connection</code></pre>
+<p>어떻게 진행되고 있는지 이해하기 위해서, 작성한 함수를 좀더 사용하기 쉽도록, 다음과 같이 <code>center</code> 함수를 다시 정의하자:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">center &lt;-<span class="st"> </span>function(data, <span class="dt">desired =</span> <span class="dv">0</span>) {
-  <span class="co"># return a new vector containing the original data centered around the</span>
-  <span class="co"># desired value (0 by default).</span>
-  <span class="co"># Example: center(c(1, 2, 3), 0) =&gt; c(-1, 0, 1)</span>
+  <span class="co"># 원하는 값(기본설정으로 0) </span>
+  <span class="co"># 주위로 원데이터에 대한 중심정보를 담고 있는 새로운 벡터를 반환한다.</span>
+  <span class="co"># 사용례: center(c(1, 2, 3), 0) =&gt; c(-1, 0, 1)</span>
   new_data &lt;-<span class="st"> </span>(data -<span class="st"> </span><span class="kw">mean</span>(data)) +<span class="st"> </span>desired
   <span class="kw">return</span>(new_data)
 }</code></pre></div>
-<p>The key change is that the second argument is now written <code>desired = 0</code> instead of just <code>desired</code>. If we call the function with two arguments, it works as it did before:</p>
+<p>변경된 주요사항은 두번째 인자가 이제 <code>desired</code> 대신에 <code>desired = 0</code>이 되었다. 두 인자를 갖는 함수를 호출하면, 전과 동일한 방식으로 동작한다:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test_data &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)
 <span class="kw">center</span>(test_data, <span class="dv">3</span>)</code></pre></div>
-<pre class="output"><code>[1] 3 3 3 3
-</code></pre>
-<p>But we can also now call <code>center()</code> with just one argument, in which case <code>desired</code> is automatically assigned the default value of <code>0</code>:</p>
+<pre class="output"><code>[1] 3 3 3 3</code></pre>
+<p>하지만, 단지 하나의 인자로 <code>center()</code> 함수를 호출할 수도 있다. 이 경우에 <code>desired</code>는 자동적으로 초기 설정값 <code>0</code>이 할당된다:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">more_data &lt;-<span class="st"> </span><span class="dv">5</span> +<span class="st"> </span>test_data
 more_data</code></pre></div>
-<pre class="output"><code>[1] 5 5 5 5
-</code></pre>
+<pre class="output"><code>[1] 5 5 5 5</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">center</span>(more_data)</code></pre></div>
-<pre class="output"><code>[1] 0 0 0 0
-</code></pre>
-<p>This is handy: if we usually want a function to work one way, but occasionally need it to do something else, we can allow people to pass an argument when they need to but provide a default to make the normal case easier.</p>
-<p>The example below shows how R matches values to arguments</p>
+<pre class="output"><code>[1] 0 0 0 0</code></pre>
+<p>매우 편리하다: 만약 한 방식으로 동작하는 함수를 원하지만 때때로 다르게 동작시킬 필요가 있다면, 필요할 때만 인자를 넘기게 하는 방식으로, 초기 설정값을 넣어서 정상적인 경우를 좀더 쉽게 처리할 수 있다.</p>
+<p>다음 예제는 어떻게 R이 인자에 값을 매칭하는지 보여준다:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">display &lt;-<span class="st"> </span>function(<span class="dt">a =</span> <span class="dv">1</span>, <span class="dt">b =</span> <span class="dv">2</span>, <span class="dt">c =</span> <span class="dv">3</span>) {
   result &lt;-<span class="st"> </span><span class="kw">c</span>(a, b, c)
   <span class="kw">names</span>(result) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>)  <span class="co"># This names each element of the vector</span>
   <span class="kw">return</span>(result)
 }
 
-<span class="co"># no arguments</span>
+<span class="co"># 인자 없음</span>
 <span class="kw">display</span>()</code></pre></div>
 <pre class="output"><code>a b c 
-1 2 3 
-</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># one argument</span>
+1 2 3 </code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 인자 하나</span>
 <span class="kw">display</span>(<span class="dv">55</span>)</code></pre></div>
 <pre class="output"><code> a  b  c 
-55  2  3 
-</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># two arguments</span>
+55  2  3 </code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 인자 둘</span>
 <span class="kw">display</span>(<span class="dv">55</span>, <span class="dv">66</span>)</code></pre></div>
 <pre class="output"><code> a  b  c 
-55 66  3 
-</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># three arguments</span>
+55 66  3 </code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 인자 셋</span>
 <span class="kw">display</span> (<span class="dv">55</span>, <span class="dv">66</span>, <span class="dv">77</span>)</code></pre></div>
 <pre class="output"><code> a  b  c 
-55 66 77 
-</code></pre>
-<p>As this example shows, arguments are matched from left to right, and any that haven’t been given a value explicitly get their default value. We can override this behavior by naming the value as we pass it in:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># only setting the value of c</span>
+55 66 77 </code></pre>
+<p>예제가 보여주듯이, 인자는 왼쪽에서 오른쪽으로 매칭된다. 그리고 명시적으로 값이 주어지지 않는 것은 초기 설정된 값을 갖는다. 인자를 넘길 때 값에 이름을 줌으로써 이런 행동을 치환(오버라이드, override)할 수 있다:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># c 값만 별도 설정</span>
 <span class="kw">display</span>(<span class="dt">c =</span> <span class="dv">77</span>)</code></pre></div>
 <pre class="output"><code> a  b  c 
- 1  2 77 
-</code></pre>
+ 1  2 77 </code></pre>
 <aside class="callout panel panel-info">
 <div class="panel-heading">
-<h2 id="tip-1"><span class="glyphicon glyphicon-pushpin"></span>Tip</h2>
+<h2 id="조언-3"><span class="glyphicon glyphicon-pushpin"></span>조언</h2>
 </div>
 <div class="panel-body">
-<p>To be precise, R has three ways that arguments supplied</p>
-<p>by you are matched to the <em>formal arguments</em> of the function definition</p>
-<ol style="list-style-type: decimal">
-<li>by complete name,</li>
-<li>by partial name (matching on initial <em>n</em> characters of the argument name), and</li>
-<li>by position.</li>
-</ol>
-<p>Arguments are matched in the manner outlined above in <em>that order</em>: by complete name, then by partial matching of names, and finally by position.</p>
+<p>좀더 구체적으로, R은 세가지 방식으로 사용자가 넘긴 인자를 함수 정의된 <em>공식 인자(formal arguments)</em>와 매칭한다. 1. 완전한 이름으로 매칭 1. 부분 이름으로 매칭 (인자 이름의 첫 <em>n</em>개 문자) 1. 위치로 매칭 <em>상기 언급된 순서</em>로 인자가 매칭된다: 완전한 이름으로 매칭하고, 부분 이름으로 매칭하고, 마지막으로 위치로 매칭된다.</p>
 </div>
 </aside>
-<p>With that in hand, let’s look at the help for <code>read.csv()</code>:</p>
+<p>상기 내용을 가지고, <code>read.csv()</code> 함수 도움말을 살펴 보자:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">?read.csv</code></pre></div>
-<p>There’s a lot of information there, but the most important part is the first couple of lines:</p>
+<p>많은 정보가 있지만, 가장 중요하는 부분은 처음 몇줄이다:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">read.csv</span>(file, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">quote =</span> <span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span>,
          <span class="dt">dec =</span> <span class="st">&quot;.&quot;</span>, <span class="dt">fill =</span> <span class="ot">TRUE</span>, <span class="dt">comment.char =</span> <span class="st">&quot;&quot;</span>, ...)</code></pre></div>
-<p>This tells us that <code>read.csv()</code> has one argument, <code>file</code>, that doesn’t have a default value, and six others that do. Now we understand why the following gives an error:</p>
+<p><code>read.csv()</code>는 하나의 인자 <code>file</code>만 초기 설정을 갖지 않고, 다른 인자 6개는 초기 설정값을 갖는 것을 나타낸다. 이제 왜 다음 명령문에 오류가 생성되는지 이해된다:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="ot">FALSE</span>, <span class="st">&quot;data/inflammation-01.csv&quot;</span>)</code></pre></div>
-<pre class="error"><code>Error in read.table(file = file, header = header, sep = sep, quote = quote, : &#39;file&#39; must be a character string or connection
-</code></pre>
-<p>It fails because <code>FALSE</code> is assigned to <code>file</code> and the filename is assigned to the argument <code>header</code>.</p>
+<pre class="error"><code>Error in read.table(file = file, header = header, sep = sep, quote = quote, : &#39;file&#39; must be a character string or connection</code></pre>
+<p><code>FALSE</code>가 <code>file</code>에 할당되고, 파일명이 <code>header</code> 인자에 할당되기 때문에 실패한다.</p>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
-<h2 id="challenge---a-function-with-default-argument-values"><span class="glyphicon glyphicon-pencil"></span>Challenge - A function with default argument values</h2>
+<h2 id="도전-과제---디폴트-기본인자값을-갖는-함수"><span class="glyphicon glyphicon-pencil"></span>도전 과제 - 디폴트 기본인자값을 갖는 함수</h2>
 </div>
 <div class="panel-body">
 <ul>
-<li>Rewrite the <code>rescale</code> function so that it scales a vector to lie between 0 and 1 by default, but will allow the caller to specify lower and upper bounds if they want. Compare your implementation to your neighbor’s: do the two functions always behave the same way?</li>
+<li><code>rescale</code> 함수를 재작성해서 초기 설정으로 벡터를 0에서 1 사이에 놓게 한다. 하지만 호출자가 원한다면, 하한과 상한을 지정할 수 있게 한다. 옆 사람과 구현한 것을 비교한다. 두 함수가 항상 같은 방식으로 동작하나요?</li>
 </ul>
 </div>
 </section>
 <aside class="callout panel panel-info">
 <div class="panel-heading">
-<h2 id="key-points"><span class="glyphicon glyphicon-pushpin"></span>Key Points</h2>
+<h2 id="주요점"><span class="glyphicon glyphicon-pushpin"></span>주요점</h2>
 </div>
 <div class="panel-body">
 <ul>
-<li>Define a function using <code>name &lt;- function(...args...) {...body...}</code>.</li>
-<li>Call a function using <code>name(...values...)</code>.</li>
-<li>Each time a function is called, a new stack frame is created on the <a href="reference.html#call-stack">call stack</a> to hold its arguments and local variables.</li>
-<li>R looks for variables in the current stack frame before looking for them at the top level.</li>
-<li>Use <code>help(thing)</code> to view help for something.</li>
-<li>Put comments at the beginning of functions to provide help for that function.</li>
-<li>Annotate your code!</li>
-<li>Specify default values for arguments when defining a function using <code>name = value</code> in the argument list.</li>
-<li>Arguments can be passed by matching based on name, by position, or by omitting them (in which case the default value is used).</li>
+<li><code>name &lt;- function(...args...)</code>을 사용해서 함수를 작성하라.</li>
+<li><code>name(...values...)</code>을 사용해서 함수를 호출하라.</li>
+<li>함수가 매번 호출될 때마다, 신규 스택 프레임이 <a href="reference.html#call-stack">콜 스택(call stack)</a>에 생성되어, 인자와 로컬 변수를 담는다.</li>
+<li>R은 상위 수준에서 변수를 찾기 전에, 현재 스택 프레임에서 변수를 찾는다.</li>
+<li>무언가에 대한 도움말을 보려면, <code>help(thing)</code>을 사용한다.</li>
+<li>함수 시작부분에 주석을 달아서 함수에 도움말을 제공한다.</li>
+<li>코드에 주석을 달아라.</li>
+<li>인자 목록에 <code>name = value</code>을 사용해서 함수를 정의할 때, 인자에 대한 초기 설정값을 명기하라.</li>
+<li>인자는 이름, 위치, 혹은 생략하고 넘길 수 있다. 생략하는 경우 초기설정값이 사용된다.</li>
 </ul>
 </div>
 </aside>
 <aside class="callout panel panel-info">
 <div class="panel-heading">
-<h2 id="next-steps"><span class="glyphicon glyphicon-pushpin"></span>Next Steps</h2>
+<h2 id="다음-단계"><span class="glyphicon glyphicon-pushpin"></span>다음 단계</h2>
 </div>
 <div class="panel-body">
-<p>We now have a function called analyze to visualize a single data set. We could use it to explore all 12 of our current data sets like this:</p>
+<p><code>analyze</code> 함수를 가지고 데이터셋 하나를 시각화할 수 있다. 다음과 같이 현재 데이터셋 12개 모두를 탐색하는데 사용할 수 있다:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">analyze</span>(<span class="st">&quot;data/inflammation-01.csv&quot;</span>)
 <span class="kw">analyze</span>(<span class="st">&quot;data/inflammation-02.csv&quot;</span>)
 <span class="co">#...</span>
 <span class="kw">analyze</span>(<span class="st">&quot;data/inflammation-12.csv&quot;</span>)</code></pre></div>
-<p>but the chances of us typing all 12 filenames correctly aren’t great, and we’ll be even worse off if we get another hundred files. What we need is a way to tell R to do something once for each file, and that will be the subject of the next lesson.</p>
+<p>하지만, 파일이름 12개 모두를 정확하게 타이핑할 가능성은 높지 않다. 그리고 만약 백개 파일이 더 있다면 더욱 난감해질 것이다. 필요한 것은 R이 자동으로 각 파일에 대해 한번에 하나씩 어떤 작업을 수행하게 만드는 것이다. 이것이 다음 학습주제다.</p>
 </div>
 </aside>
         </div>
