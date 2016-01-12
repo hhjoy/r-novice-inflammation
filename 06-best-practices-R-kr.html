@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="pandoc">
+    <title>Software Carpentry: R 프로그래밍</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="css/swc.css" />
+    <link rel="alternate" type="application/rss+xml" title="Software Carpentry Blog" href="http://software-carpentry.org/feed.xml"/>
+    <meta charset="UTF-8" />
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body class="lesson">
+    <div class="container card">
+      <div class="banner">
+        <a href="http://software-carpentry.org" title="Software Carpentry">
+          <img alt="Software Carpentry banner" src="img/software-carpentry-banner.png" />
+        </a>
+      </div>
+      <article>
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+                    <a href="index.html"><h1 class="title">R 프로그래밍</h1></a>
+          <h2 class="subtitle">R 사용과 프로그램 설계 우수 모범사례</h2>
+          <section class="objectives panel panel-warning">
+<div class="panel-heading">
+<h2 id="학습-목표"><span class="glyphicon glyphicon-certificate"></span>학습 목표</h2>
+</div>
+<div class="panel-body">
+<p>R로 작업할 때 우수 모범사례를 정의한다.</p>
+</div>
+</section>
+<ol style="list-style-type: decimal">
+<li>작성한 프로그램이 무엇인지 기술하는 코드로 시작한다:</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Sarah Supp, Tracy Teal, Jon Borelli 가 작성한 코드로,</span>
+<span class="co"># 2014년 과학논문에 사용한 분석과 그림을 모사하는 프로그램이다.</span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>가져오기(import) 문장(<code>library</code>)을 모두 실행한다:</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<span class="kw">library</span>(reshape)
+<span class="kw">library</span>(vegan)</code></pre></div>
+<ol start="3" style="list-style-type: decimal">
+<li>스크립트를 얻어오기(<code>source()</code>) 전에 작업 디렉토리를 설정하건, <code>R</code> 을 해당 작업 디렉토리에서 시작한다:</li>
+</ol>
+<p><code>setwd()</code> 명령어를 사용해서 작업 디렉토리를 설정할 때 주의해야 된다. 스크립트에 디렉토리를 변경하면 제현 가능성(reproducibility)을 제한한다.</p>
+<ul>
+<li>변경하려는 디렉토리가 존재하지 않거나, 사용자가 해당 디렉토리에 올바른 권한이 없는 경우 <code>setwd()</code> 명령어를 실행하면 오류가 난다. 특히, 디렉토리 구조가 서로 다른 사용자 간에 스크립트를 공유할 때 문제가 야기된다.</li>
+<li>스크립트가 오류로 종료할 때 혹은 종료하면, 시작한 디렉토리와 다른 디렉토리에 최종 남겨지게 되고, 스크립트를 다시 호출하면, 더 큰 문제를 야기한다. <code>setwd()</code> 명령어를 사용하려면, 이러한 문제를 회피하고자 스크립트 상단에 <code>setwd()</code> 설정을 두는 것이 최선이다.</li>
+</ul>
+<p>다음 오류 메시지를 통해서 R이 지정한 작업 디렉토리 설정에 실패했음을 나타낸다:</p>
+<pre><code>Error in setwd(&quot;~/path/to/working/directory&quot;) : cannot change working directory</code></pre>
+<p>스크립트를 실행하는 사용자는 본인 컴퓨터에서 연관성 있는 디렉토리에서 시작하고 나서, 상대 파일 경로를 사용하는 관례를 따르는 것을 고려한다(아래 참조).</p>
+<ol start="4" style="list-style-type: decimal">
+<li><p><code>#</code> 혹은 <code>#-</code> 기호를 사용해서 코드를 구분하게 한다. 그럼으로써 쉽게 아래로 스크롤해서 원하는 것을 찾는다.</p></li>
+<li><p>하나 이상 함수가 있다면, 코드 상단에 배치한다. 그래서 처음으로 실행되는 것 중에 하나로 만든다. 많은 함수를 작성했다면, .R 파일에 모아 넣고, <code>source</code> 해서 불러온다. <code>Source</code>해서 불러오면 모든 함수가 정의되어 필요할 때마다 사용할 수 있다. 앞에서 언급된 이유로 <code>source</code> 해서 불로온 스크립트에 <code>setwd()</code>, (혹은 사용자 작업공간에 부작용을 갖는 다른 함수) 사용을 피한다.</p></li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="st">&quot;my_genius_fxns.R&quot;</span>)</code></pre></div>
+<ol start="6" style="list-style-type: decimal">
+<li><p>코드내에는 일관된 코딩 스타일을 준수한다.</p></li>
+<li><p>코드를 모듈로 관리한다. 함수 혹은 루프 한개가 너무 길어지면, 잘게 쪼개 조작내는 것을 고려한다.</p></li>
+<li><p>여러분이 직접 반복하지 않는다. 자동화하라! 다수 객체 혹은 파일에 동일한 코드가 반복되면, 루프 혹은 함수를 사용해서 같은 작업을 수행한다. 본인이 직접 반복하면 할수록, 실수를 할 가능성이 높아진다.</p></li>
+<li><p>동일한 디렉토리에 한 프로젝트에 대한 모든 소스 파일을 관리한다. 그리고 나서, 필요하면 상대경로를 사용한다. 예를 들어, 다음 상대경로는 사용하고,</p></li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file =</span> <span class="st">&quot;/files/dataset-2013-01.csv&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>다음 절대경로 사용은 삼가한다:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file =</span> <span class="st">&quot;/Users/Karthik/Documents/sannic-project/files/dataset-2013-01.csv&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<ol start="10" style="list-style-type: decimal">
+<li>R에 메모리 이슈가 발생할 수 있다. 오랜 시간동안 R 스크립트를 사용한 후에 메모리 부족 상황은 흔한 문제다. R 세션 객체를 검사하는데, 객체 목록을 찾고, 현재 팩키지를 검색해서 사용되지 않는 객체를 제거한다. 쭉 이어진 집중적인 계산작업을 실행할 때 우수 모범사례는 해당 목적을 달성한 후 임시 객체는 제거하는 것이다. 종종 객체를 제거한 후에도 한동안 사용되지 않는 메모리가 말끔히 정리되지 않는 경우가 있다. <code>gc()</code> 명령어를 사용해서 강제로 R에 명령해서 메모리를 깔끔하게 정리한다.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">interim_object &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">rep</span>(<span class="dv">1</span>:<span class="dv">100</span>,<span class="dv">10</span>),<span class="kw">rep</span>(<span class="dv">101</span>:<span class="dv">200</span>,<span class="dv">10</span>),<span class="kw">rep</span>(<span class="dv">201</span>:<span class="dv">300</span>,<span class="dv">10</span>)) <span class="co"># 1,000 줄 표본 데이터셋</span>
+<span class="kw">object.size</span>(interim_object) <span class="co"># 객체에 할당된 메모리 크기를 보고한다.</span>
+<span class="kw">rm</span>(interim_object) <span class="co"># 특정 객체만 제거한다.</span>
+<span class="kw">gc</span>() <span class="co"># 더이상 사용되지 않는 메모리를 R로 하여금 강제로 해방시켜 사용할 수 있게 만든다.</span>
+<span class="kw">ls</span>()  <span class="co"># 현재 작업공간에 있는 모든 객체를 보여준다.</span>
+<span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>()) <span class="co"># 작업공간에 있는 모든 객체를 삭제하고 새로운 상태로 시작한다.</span></code></pre></div>
+<ol start="11" style="list-style-type: decimal">
+<li><p>세션 이력(history)은 저장하지 않는다. (기본 디폴트 설정으로 R에서 <code>RData</code> 파일을 저장할 것인지 묻는다). 대신에, 깨끗한 환경에서 시작해서, 이전 객체가 현재 환경을 오염시키지 않게 만든다. 세션 이력을 저장하면, 다른 누군가의 컴퓨터에서 코드를 실행할 때 예상하지 못한 결과가 나올 수 있다.</p></li>
+<li><p>프로젝트 디렉토리 어딘가에 <code>sessionInfo()</code> 를 가능하면 기록해 둔다. 세션정보는 현재 프로젝트에 사용되는 모든 팩키지 정보를 간직하고 있기 때문에 매우 소중하다. 새로운 프로젝트 버젼으로 인해 함수 동작방식이 변경되면, 항상 거슬러 올라가 잘 동작했던 버젼을 재설치하면 된다. (주의: 최소한 CRAN 사이트에, 모든 이전 팩키지 버젼이 영구적으로 저장보관되어 있다).</p></li>
+<li><p>협업하라. 친구를 잡아서 “코드 검토(code review)”를 실습하라. 방법론과 논문작성에는 실제로 활용하는데, 코드에는 왜 하지 않는가? 코드는 사실 주된 과학 제품이며, 엄청난 노고의 결과물이다!</p></li>
+<li><p>버전 제어 시스템과 자주 갱신하면서 코드를 개발한다!</p></li>
+</ol>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2 id="토론---우수-모범사례"><span class="glyphicon glyphicon-pencil"></span>토론 - 우수 모범사례</h2>
+</div>
+<div class="panel-body">
+<ol style="list-style-type: decimal">
+<li>우수 모범사례로 다른 어떤 제안이 있나요?</li>
+<li>오늘 작업한 코드를 가독성을 좋게 하려면, 어떻게 재구성할 수 있을까요? 옆에 있는 참여자와 토론한다.</li>
+<li><code>inflammation.R</code> 과 <code>inflammation_fxns.R</code> 로 이름붙인 R 스크립트 두개를 작성한다.</li>
+<li>코드를 복사해서 붙여 넣는다. 그래서 <code>inflammation.R</code> 스크립트는 “무슨 작업을 수행하고” <code>inflammation_fxns.R</code> 스크립트는 모든 함수를 포함하게 된다. <strong>힌트</strong>: 파일 중 하나에 <code>source</code> 코드를 추가할 필요가 있다.</li>
+</ol>
+</div>
+</section>
+        </div>
+      </div>
+      </article>
+      <div class="footer">
+        <a class="label swc-blue-bg" href="http://software-carpentry.org">Software Carpentry</a>
+        <a class="label swc-blue-bg" href="https://github.com/swcarpentry/r-novice-inflammation">Source</a>
+        <a class="label swc-blue-bg" href="mailto:admin@software-carpentry.org">Contact</a>
+        <a class="label swc-blue-bg" href="LICENSE.html">License</a>
+      </div>
+    </div>
+    <!-- Javascript placed at the end of the document so the pages load faster -->
+    <script src="http://software-carpentry.org/v5/js/jquery-1.9.1.min.js"></script>
+    <script src="css/bootstrap/bootstrap-js/bootstrap.js"></script>
+  </body>
+</html>
