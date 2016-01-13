@@ -1,8 +1,9 @@
 ---
-layout: page
-title: Programming with R
-subtitle: Dynamic reports with knitr
+title: "Programming with R"
 minutes: 30
+output: word_document
+subtitle: Dynamic reports with knitr
+layout: page
 ---
 
 ```{r, include = FALSE}
