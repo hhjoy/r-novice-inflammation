@@ -1,55 +1,61 @@
 ---
 layout: page
-title: Programming with R
-subtitle: Dynamic reports with knitr
+title: R 프로그래밍
+subtitle: knitr와 함께하는 동적 보고서 작성
 minutes: 30
 ---
 
 
-
-> ## Learning Objectives {.objectives}
+> ## 학습 목표 {.objectives}
 >
-> * To discover `knitr` and the generation of dynamic reports
+> * `knitr` 가치를 이해한다: 텍스트, 코드, 산출결과가 담겨있는 동적 보고서를 생성한다.
+> * 마크다운 구문을 사용해서 기본 서식을 제어한다.
+> * 코드 덩어리와 인라인 코드를 담고 있는 `.Rmd` 문서를 생성, 편집, 컴파일할 수 있다.
 
-`Knitr` is an R package that makes your code neat, pretty, and shows your notes, code, and output simultaneously in an `html` document. You create these documents in `.Rmd` files. You can write in `LateX` or `md`. 
+`knitr`은 R 팩키지로, 작성한 기록, 코드, 산출결과물을 단일 문서에 정리할 수 있도록 한다.
+`knitr`는 "문학적 프로그래밍(literate programming)"[^1]에 대한 훌륭한 도구다 - 사람뿐만 아니라 컴퓨터도 여러분이 작성한 코드를 읽을 수 있어야 하나는 철학이다! 또한, 글쓰기와 컴퓨터 결과를 함께 유지 보관할 수 있다. 그래서, 새로운 데이터가 수집되거나 데이터 정제 작업을 바꾸면, 문서만 다시 재컴파일하면, 모든 것이 최근 상태로 유지된다!
 
-knitr extracts R code in the input document (.Rmd), evaluates it and writes the results to the output document (html). There are two types of R code: chunks (code as separate paragraphs) and inline R code.
+`knitr` 문서를 마크다운(직관적인 표기법을 사용해서 텍스트 서식을 표현할 수 있게 함)으로 불리는 간단한 일반 텍스트 형식으로 작성한다. 그래서, 작성하고 있는 콘텐츠에 집중할 수 있게 된다. 
+하지만, 그럼에도 불구하고 멋진 서식을 갖춘 문서를 얻게 된다. 
+사실, 일반 텍스트(그리고, R코드, 산출결과를 함께)를 HTML로 변환한다. LaTeX 과 Pandoc이 컴퓨터에 설치되어 있다면, `.pdf` 혹은 워드 `.docx`도 가능하다.
 
+[^1]: [KTUG FAQ - Literate Programming](http://faq.ktug.org/faq/LiterateProgramming)
+
+시작하려면, `knitr` 팩키지를 설치한다.
 
 ~~~{.r}
 install.packages("knitr")
 ~~~
 
-~~~{.r}
-library(knitr)
-~~~
+`File &rarr; New File` 메뉴를 선택하면, "R Markdown..."에 대한 선택옵션이 나온다.
+선택하고 기본디폴트 선택옵션을 대화상자에서 이어 선택한다(하지만, 이런 방식으로 발표 슬라이드도 선택할 수 있다). 파일을 저장하고, 스크립트 상단에 "Knit HTML" 버튼을 클릭한다.
+산출 결과를 소스 텍스트 파일과 비교한다.
 
-Restart RStudio. 
-Open a new `Rmd` file. 
-
-In Rmd, anything between lines that start and end with triple quotes ``` will be run as R code.
-
-
-~~~{.r}
-summary(cars)
-~~~
-
-
-
-~~~{.output}
-     speed           dist       
- Min.   : 4.0   Min.   :  2.00  
- 1st Qu.:12.0   1st Qu.: 26.00  
- Median :15.0   Median : 36.00  
- Mean   :15.4   Mean   : 42.98  
- 3rd Qu.:19.0   3rd Qu.: 56.00  
- Max.   :25.0   Max.   :120.00  
-
-~~~
-
-> ## Challenge - Using KnitR to produce a report {.challenge}
+> ## 도전 과제 - 마크다운에서 텍스트 서식변경 기능 탐색하기 {.challenge}
 >
-> 1. Open an new .Rmd script and save it as inflammation_report.Rmd
-> 2. Copy and paste the code as embedded R chunks to read in the data and plot average inflammation, or the heat map that we created.
-> 3. Add a few notes describing what the code does and what the main findings are.
-> 4. `KNIT` and view the html
+> <http://rmarkdown.rstudio.com/authoring_basics.html> 사이트를 방문해서, 간략하게 일부 서식 선택옵션을 점검해 본다.
+>
+> 예제 문서에서 다음을 추가한다.
+> 
+> * `#`을 사용한 제목서식 변경 
+> * 별표를 사용한 강조기능:  \*이탤릭 글꼴\* 그리고 \*\*강조 글꼴\*\*
+> * `*` 기호를 사용한 목록 표시, `1.`, `2.` 을 사용한 숫자 목록 등
+> * **보너스:** 표를 생성하시오.
+
+마크다운은 LaTeX 수식편집 기능도 지원한다.
+멋진 수식을 `$` 기호 사이에 수식을 넣어서 표현할 수 있다.
+예를 들어, `$\alpha = \dfrac{1}{(1 - \beta)^2}$` 코딩하면 결과 다음과 같이 표현된다: $\alpha = \dfrac{1}{(1 - \beta)^2}$.
+
+소스 파일(`.Rmd`) 상단에 헤더 정보가 YAML 형식(`---` 대쉬 세개로 위와 아래 감쌈)으로 저장되어 있다. 일부는 출력 헤더에 표현되고, 일부는 변환엔진(LaTeX, Pandoc 등)에 서식정보를 제공한다.
+
+R 코드와 일반 텍스트를 구분하는데, RMarkdown은 "코드 덩어리"를 구분하는데, 틱 3개 `` ``` `` 다음에 `{r}`을 연결해 사용한다. RStudio에서 "코드덩어리"를 생성하는 키보드 단축키는 `command + option + i` 혹은 `control + alt +i` 다.
+
+코드 덩어리는 코드를 실행하고 출력 문서에 결과를 뿌려준다. 하지만, 코드를 `` `r code-here` `` 처럼 감싸서 텍스트 블록 내부에 코드 실행 결과를 출력할 수도 있다.
+
+> ## 도전 과제 - `knitr`를 사용해서 보고서를 작성한다. {.challenge}
+>
+> 1. 새로운 `.Rmd` 스크립트를 열고, `inflammation_report.Rmd` 파일명으로 저장한다.
+> 2. 앞에서 작업한 염증 데이터를 불러와서 염증 평균치를 도식화하는 코드 덩어리를 복사한다.
+> 3. 코드가 어떤 역할을 하고, 주요 분석결과가 무엇인지 간략하게 기술을 한다.
+염증 수준 중위값을 계산하는 인라인 코드를 포함한다.
+> 4. 문서를 떠서(`knit`) 결합시키고, HTML 산출물을 살펴본다.
