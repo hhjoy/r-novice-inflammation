@@ -5,8 +5,6 @@ subtitle: Dynamic reports with knitr
 minutes: 30
 ---
 
-
-
 > ## Learning Objectives {.objectives}
 >
 > * Understand the value of `knitr`: Generate dynamic documents that include text, code, and results.
