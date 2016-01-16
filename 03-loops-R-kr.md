@@ -309,24 +309,26 @@ length(vowels)
 
 ### 다수 파일 처리하기
 
-We now have almost everything we need to process all our data files.
-The only thing that's missing is a function that finds files whose names match a pattern.
-We do not need to write it ourselves because R already has a function to do this called `list.files`.
+이제 모든 데이터 파일을 처리하는데 필요한 거의 모든 것을 갖췄다.
+빠진 단 한가지는 파일명을 패턴과 매칭하여 해당파일을 찾아내는 함수다. 
+이 작업을 수행하는데 함수를 별도로 작성할 필요는 없는데, 
+이유는 이미 R에는 `list.files` 함수가 존재하기 때문이다.
 
-If we run the function without any arguments, `list.files()`, it returns every file in the current working directory.
-We can understand this result by reading the help file (`?list.files`).
-The first argument, `path`, is the path to the directory to be searched, and it has the default value of `"."` (recall from the [lesson](http://swcarpentry.github.io/shell-novice/01-filedir.html) on the Unix Shell that `"."` is shorthand for the current working directory).
-The second argument, `pattern`, is the pattern being searched, and it has the default value of `NULL`.
-Since no pattern is specified to filter the files, all files are returned.
+어떤 인자도 없이 `list.files()` 함수를 실행하게 되면, 
+현재 작업 디렉토리의 모든 파일을 반환한다. 
+`?list.files()` 도움말 파일을 읽어서 결과를 이해할 수 있다. 
+첫번째 인자, `path`는 검색되는 디렉토리의 경로가 되고, 
+초기 설정값은 `"."` 현재 디렉토리가 된다. 
+유닉스 쉘을 [lesson](http://swcarpentry.github.io/shell-novice/01-filedir.html)할 때, 
+`"."`은 현재 작업 디렉토리를 짧게 나타낸다는 것을 배웠다. 
+두번째 인자는, `pattern`으로 검색되는 패턴을 지정하고, 초기 설정값은 `NULL`이다. 
+어떠한 패턴도 파일을 필터링하도록 지정하지 않아, 모든 파일이 반환된다.
 
-So to list all the csv files, we could run either of the following:
-
+모든 csv 파일 목록을 출력하기 위해서, 다음 중 하나를 실행한다:
 
 ~~~{.r}
 list.files(path = "data", pattern = "csv")
 ~~~
-
-
 
 ~~~{.output}
  [1] "car-speeds-cleaned.csv" "car-speeds.csv"        
@@ -338,51 +340,43 @@ list.files(path = "data", pattern = "csv")
 [13] "inflammation-11.csv"    "inflammation-12.csv"   
 [15] "sample.csv"             "small-01.csv"          
 [17] "small-02.csv"           "small-03.csv"          
-
 ~~~
-
-
 
 ~~~{.r}
 list.files(path = "data", pattern = "inflammation")
 ~~~
-
-
 
 ~~~{.output}
  [1] "inflammation-01.csv" "inflammation-02.csv" "inflammation-03.csv"
  [4] "inflammation-04.csv" "inflammation-05.csv" "inflammation-06.csv"
  [7] "inflammation-07.csv" "inflammation-08.csv" "inflammation-09.csv"
 [10] "inflammation-10.csv" "inflammation-11.csv" "inflammation-12.csv"
-
 ~~~
 
 
 > ## Tip {.callout}
 >
-> For larger projects, it is recommended to organize separate parts of the
-> analysis into multiple subdirectories, e.g. one subdirectory for the raw data,
-> one for the code, and one for the results like figures. We have done that here
-> to some extent, putting all of our data files into the subdirectory "data".
-> For more advice on this topic, you can read [A quick guide to organizing
-> computational biology projects][Noble2009] by William Stafford Noble.
+> 더 큰 프로젝트에서는 분석에 대한 각 부분별 쪼개서,
+> 다수의 하위 디렉토리 구조를 갖도록 추전한다. 
+> 예를 들어, 원 데이터만 갖는 하위 디렉토리, 
+> 코드만 담고 있는 하위 디렉토리, 
+> 그림같은 결과를 담고 있는 디렉토리. 
+> 이런 관점에서 상기 예제는 작기 때문에, 
+> "data"라는 디렉토리 한곳에 모든 데이터, 코드, 산출물이 담겨진 구조다.
+> 이 주제에 대해서 좀더 많은 조언은 William Stafford Noble이 작성한 [A quick guide to organizing computational biology projects][Noble2009]을 참조바란다.
 
 [Noble2009]: http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1000424
 
+상기 예제가 보여주듯이, `list.files` 결과는 문자열 벡터로 각 파일이름에 대해서 뭔가를 하기 위해서, 루프를 돌려야 된다는 것이다. 
+지금 사례의 경우, 작업하려는 "뭔가"가 `analyze` 함수다.
 
-As these examples show, `list.files` result is a vector of strings, which means we can loop over it to do something with each filename in turn.
-In our case, the "something" we want is our `analyze` function.
-
-Because we have put our data in separate subdirectory, if we want to access these files
-using the output of `list.files` we also need to include the "path" portion of the file name.
-We can do that by using the argument `full.names = TRUE`.
-
+별도 하위디렉토리에 데이터를 몰아 넣었기 때문에, `list.files` 결과를 사용해서 데이터 파일에 접근하려면,
+파일명에 "경로" 부분을 포함시킬 필요가 있다.
+`full.names = TRUE` 인자를 사용해서 해당 작업을 수행할 수 있다.
 
 ~~~{.r}
 list.files(path = "data", pattern = "csv", full.names = TRUE)
 ~~~
-
-
 
 ~~~{.output}
  [1] "data/car-speeds-cleaned.csv" "data/car-speeds.csv"        
@@ -394,16 +388,11 @@ list.files(path = "data", pattern = "csv", full.names = TRUE)
 [13] "data/inflammation-11.csv"    "data/inflammation-12.csv"   
 [15] "data/sample.csv"             "data/small-01.csv"          
 [17] "data/small-02.csv"           "data/small-03.csv"          
-
 ~~~
-
-
 
 ~~~{.r}
 list.files(path = "data", pattern = "inflammation", full.names = TRUE)
 ~~~
-
-
 
 ~~~{.output}
  [1] "data/inflammation-01.csv" "data/inflammation-02.csv"
@@ -412,13 +401,9 @@ list.files(path = "data", pattern = "inflammation", full.names = TRUE)
  [7] "data/inflammation-07.csv" "data/inflammation-08.csv"
  [9] "data/inflammation-09.csv" "data/inflammation-10.csv"
 [11] "data/inflammation-11.csv" "data/inflammation-12.csv"
-
 ~~~
 
-
-Let's test out running our `analyze` function by using it on the first three files in the vector returned by `list.files`:
-
-
+`list.files`에서 반환되는 벡터 첫 3개 파일에 대해,  `analyze` 함수 실행을 테스트해 본다:
 
 ~~~{.r}
 filenames <- list.files(path = "data", pattern = "inflammation", full.names = TRUE)
@@ -429,60 +414,57 @@ for (f in filenames) {
 }
 ~~~
 
-
-
 ~~~{.output}
 [1] "data/inflammation-01.csv"
-
 ~~~
 
-<img src="fig/03-loops-R-loop-analyze-1.png" title="plot of chunk loop-analyze" alt="plot of chunk loop-analyze" style="display: block; margin: auto;" /><img src="fig/03-loops-R-loop-analyze-2.png" title="plot of chunk loop-analyze" alt="plot of chunk loop-analyze" style="display: block; margin: auto;" /><img src="fig/03-loops-R-loop-analyze-3.png" title="plot of chunk loop-analyze" alt="plot of chunk loop-analyze" style="display: block; margin: auto;" />
+<img src="fig/03-loops-R-loop-analyze-1.png" title="plot of chunk loop-analyze" alt="plot of chunk loop-analyze" style="display: block; margin: auto;" />
+<img src="fig/03-loops-R-loop-analyze-2.png" title="plot of chunk loop-analyze" alt="plot of chunk loop-analyze" style="display: block; margin: auto;" />
+<img src="fig/03-loops-R-loop-analyze-3.png" title="plot of chunk loop-analyze" alt="plot of chunk loop-analyze" style="display: block; margin: auto;" />
 
 ~~~{.output}
 [1] "data/inflammation-02.csv"
-
 ~~~
 
-<img src="fig/03-loops-R-loop-analyze-4.png" title="plot of chunk loop-analyze" alt="plot of chunk loop-analyze" style="display: block; margin: auto;" /><img src="fig/03-loops-R-loop-analyze-5.png" title="plot of chunk loop-analyze" alt="plot of chunk loop-analyze" style="display: block; margin: auto;" /><img src="fig/03-loops-R-loop-analyze-6.png" title="plot of chunk loop-analyze" alt="plot of chunk loop-analyze" style="display: block; margin: auto;" />
+<img src="fig/03-loops-R-loop-analyze-4.png" title="plot of chunk loop-analyze" alt="plot of chunk loop-analyze" style="display: block; margin: auto;" />
+<img src="fig/03-loops-R-loop-analyze-5.png" title="plot of chunk loop-analyze" alt="plot of chunk loop-analyze" style="display: block; margin: auto;" />
+<img src="fig/03-loops-R-loop-analyze-6.png" title="plot of chunk loop-analyze" alt="plot of chunk loop-analyze" style="display: block; margin: auto;" />
 
 ~~~{.output}
 [1] "data/inflammation-03.csv"
-
 ~~~
 
-<img src="fig/03-loops-R-loop-analyze-7.png" title="plot of chunk loop-analyze" alt="plot of chunk loop-analyze" style="display: block; margin: auto;" /><img src="fig/03-loops-R-loop-analyze-8.png" title="plot of chunk loop-analyze" alt="plot of chunk loop-analyze" style="display: block; margin: auto;" /><img src="fig/03-loops-R-loop-analyze-9.png" title="plot of chunk loop-analyze" alt="plot of chunk loop-analyze" style="display: block; margin: auto;" />
+<img src="fig/03-loops-R-loop-analyze-7.png" title="plot of chunk loop-analyze" alt="plot of chunk loop-analyze" style="display: block; margin: auto;" />
+<img src="fig/03-loops-R-loop-analyze-8.png" title="plot of chunk loop-analyze" alt="plot of chunk loop-analyze" style="display: block; margin: auto;" />
+<img src="fig/03-loops-R-loop-analyze-9.png" title="plot of chunk loop-analyze" alt="plot of chunk loop-analyze" style="display: block; margin: auto;" />
 
-Sure enough, the maxima of these data sets show exactly the same ramp as the first, and their minima show the same staircase structure.
+물론, 데이터셋의 최대값은 처음과 동일한 경사를 보여주고, 최소값은 동일한 계단구조를 보여준다.
 
 > ## Tip {.callout}
 >
-> In this lesson we saw how to use a simple `for` loop to repeat an operation.
-> As you progress with R, you will learn that there are multiple ways to
-> accomplish this. Sometimes the choice of one method over another is more a
-> matter of personal style, but other times it can have consequences for the
-> speed of your code. For instruction on best practices, see this supplementary
-> [lesson](03-supp-loops-in-depth.html) that demonstrates how to properly repeat
-> operations in R.
+> 이번 학습에서는 연산작업을 반복하기 위해서, 간단한 `for` 루프 사용법을 살펴봤다. 
+> R을 사용하면서, 작업을 수행하는 다양한 다른 방법이 있다는 것을 배울 것이다. 
+> 때때로 여러가지 방법에 대해 한가지 방법을 선택하는 것이 좀더 개인 취향의 문제일 수 있지만, 
+> 다른 경우에는 코드수행 속도 차이를 가져오는 결과가 될 수도 있다. 
+> 모범 사례로, R의 연산을 어떻게 반복하는지 시범을 보여주는 [보충 학습](03-supp-loops-in-depth.html)을 참조바랍니다.
 
-> ## Challenge - Using loops to analyze multiple files {.challenge}
+> ## 도전과제 - 루프를 사용해서 다수 파일 분석하기 {.challenge}
 >
-> 1. Write a function called `analyze_all` that takes a filename pattern as its sole argument and runs `analyze` for each file whose name matches the pattern.
+> 1. 파일 이름 패턴을 인자로만 받는 `analyze_all` 함수를 작성해서, 파일 이름과 패턴이 매칭되는 파일에 대해 `analyze` 분석을 실행하세요.
 
 
+> ## 주요점 {.callout}
+>
+> * `for (variable in collection)`를 사용해서, 한번에 하나씩 요소를 처리하세요.
+> * `for` 루프의 몸통 부분은 중괄호(`{ }`)로 감싸져 있다.
+> * 다른 값을 담고 있는 것의 길이를 알기 위해서, `length(thing)`을 사용하세요.
+> * `list.files(pattern = "pattern")`을 사용해서, 파일명과 패턴이 매칭되는 파일 목록을 생성하세요.
 
-> ## Key Points {.callout}
+> ## 다음 단계 {.callout}
 >
-> * Use `for (variable in collection)` to process the elements of a collection one at a time.
-> * The body of a `for` loop is surrounded by curly braces (`{ }`).
-> * Use `length(thing)` to determine the length of something that contains other values.
-> * Use `list.files(path = "path", pattern = "pattern", full.names = TRUE)` to create a list of files whose names match a pattern.
-
-> ## Next Steps {.callout}
->
-> We have now solved our original problem: we can analyze any number of data files with a single command.
-> More importantly, we have met two of the most important ideas in programming:
->
-> * Use functions to make code easier to re-use and easier to understand.
-> * Use vectors and data frames to store related values, and loops to repeat operations on them.
->
-> We have one more big idea to introduce...
+> 이제 원래갖고 있던 문제를 해결했다. 단일 명령문으로 임의 데이터 파일을 분석할 수 있다. 좀더 중요한 것은 > 프로그래밍에서 가장 중요한 두가지 아이디어를 경험했다.
+> 
+> * 함수를 사용해서, 코드를 재사용하기 쉽게하고 이해하기 쉽게 했다.
+> * 벡터와 데이터프레임을 사용해서 관련된 값을 저장했고, 루프를 사용하여 데이터에 대한 연산을 반복했다.
+> 
+> 한가지 더 소개할 중요한 아이디어가 있다...
